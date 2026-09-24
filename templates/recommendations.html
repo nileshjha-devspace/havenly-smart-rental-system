@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Recommendations | Havenly</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f6f2;
+            color: #17251f;
+        }
+
+
+        /* ==========================================
+           NAVBAR
+        ========================================== */
+
+        .navbar {
+            height: 72px;
+
+            background: white;
+
+            border-bottom: 1px solid #e6e8e6;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+        }
+
+
+        .logo {
+            font-size: 27px;
+
+            font-weight: 800;
+
+            letter-spacing: -1px;
+
+            color: #17251f;
+
+            text-decoration: none;
+        }
+
+
+        .logo span {
+            color: #e8755c;
+        }
+
+
+        .nav-links {
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+        }
+
+
+        .nav-links a {
+            color: #68756e;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        .nav-links a:hover {
+            color: #17251f;
+        }
+
+
+        .logout-btn {
+            background: #17251f;
+
+            color: white !important;
+
+            padding: 10px 16px;
+
+            border-radius: 9px;
+        }
+
+
+        /* ==========================================
+           MAIN
+        ========================================== */
+
+        .main {
+            width: 90%;
+
+            max-width: 1150px;
+
+            margin: auto;
+
+            padding: 45px 0 70px;
+        }
+
+
+        /* ==========================================
+           HERO
+        ========================================== */
+
+        .hero {
+            background: #17251f;
+
+            border-radius: 24px;
+
+            padding: 42px;
+
+            color: white;
+
+            position: relative;
+
+            overflow: hidden;
+
+            margin-bottom: 28px;
+        }
+
+
+        .hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 280px;
+
+            height: 280px;
+
+            border-radius: 50%;
+
+            background: rgba(232, 117, 92, 0.18);
+
+            right: -80px;
+
+            top: -110px;
+        }
+
+
+        .ai-badge {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            background: rgba(255,255,255,0.1);
+
+            border: 1px solid rgba(255,255,255,0.15);
+
+            padding: 7px 11px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.7px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 15px;
+        }
+
+
+        .hero h1 {
+            font-size: 36px;
+
+            letter-spacing: -1px;
+
+            margin-bottom: 10px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .hero p {
+            color: #c5cdc8;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            max-width: 650px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* ==========================================
+           PREFERENCES
+        ========================================== */
+
+        .preference-card {
+            background: white;
+
+            border: 1px solid #e5e8e5;
+
+            border-radius: 20px;
+
+            padding: 28px;
+
+            margin-bottom: 35px;
+        }
+
+
+        .preference-header {
+            margin-bottom: 23px;
+        }
+
+
+        .preference-header h2 {
+            font-size: 21px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .preference-header p {
+            color: #7b867f;
+
+            font-size: 12px;
+        }
+
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns:
+                1.3fr
+                1fr
+                1fr
+                auto;
+
+            gap: 13px;
+
+            align-items: end;
+        }
+
+
+        .field label {
+            display: block;
+
+            color: #526058;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            margin-bottom: 8px;
+        }
+
+
+        .field input,
+        .field select {
+            width: 100%;
+
+            height: 46px;
+
+            border: 1px solid #dfe4df;
+
+            border-radius: 10px;
+
+            padding: 0 13px;
+
+            font-size: 13px;
+
+            outline: none;
+
+            background: white;
+
+            color: #17251f;
+        }
+
+
+        .field input:focus,
+        .field select:focus {
+            border-color: #e8755c;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(232, 117, 92, 0.08);
+        }
+
+
+        .find-btn {
+            height: 46px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #e8755c;
+
+            color: white;
+
+            padding: 0 20px;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            white-space: nowrap;
+        }
+
+
+        .find-btn:hover {
+            background: #d9634b;
+        }
+
+
+        /* ==========================================
+           RESULTS HEADER
+        ========================================== */
+
+        .results-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 17px;
+        }
+
+
+        .results-header h2 {
+            font-size: 21px;
+        }
+
+
+        .results-label {
+            color: #7b867f;
+
+            font-size: 12px;
+        }
+
+
+        /* ==========================================
+           PROPERTY CARDS
+        ========================================== */
+
+        .results-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 17px;
+        }
+
+
+        .property-card {
+            background: white;
+
+            border: 1px solid #e5e8e5;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            transition: 0.2s;
+        }
+
+
+        .property-card:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 14px 30px
+                rgba(23, 37, 31, 0.07);
+        }
+
+
+        .property-image {
+            height: 160px;
+
+            background: #e8ebe8;
+
+            overflow: hidden;
+
+            position: relative;
+        }
+
+
+        .property-image img {
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+
+        .placeholder {
+            height: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 40px;
+        }
+
+
+        /* ==========================================
+           MATCH SCORE
+        ========================================== */
+
+        .match-badge {
+            position: absolute;
+
+            top: 12px;
+
+            right: 12px;
+
+            background: white;
+
+            color: #17251f;
+
+            padding: 7px 10px;
+
+            border-radius: 9px;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 4px 12px
+                rgba(0,0,0,0.12);
+        }
+
+
+        .match-badge span {
+            color: #e8755c;
+        }
+
+
+        .property-content {
+            padding: 18px;
+        }
+
+
+        .property-type {
+            color: #e8755c;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.8px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 7px;
+        }
+
+
+        .property-title {
+            font-size: 16px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .property-location {
+            color: #7b867f;
+
+            font-size: 12px;
+
+            margin-bottom: 14px;
+        }
+
+
+        .rent {
+            font-size: 15px;
+
+            font-weight: 800;
+
+            margin-bottom: 14px;
+        }
+
+
+        .rent span {
+            color: #89928d;
+
+            font-size: 11px;
+
+            font-weight: 500;
+        }
+
+
+        /* ==========================================
+           MATCH REASONS
+        ========================================== */
+
+        .reasons {
+            border-top: 1px solid #edf0ed;
+
+            padding-top: 13px;
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 6px;
+        }
+
+
+        .reason {
+            background: #eef3ef;
+
+            color: #526159;
+
+            padding: 6px 8px;
+
+            border-radius: 7px;
+
+            font-size: 9px;
+
+            font-weight: 700;
+        }
+
+
+        .view-btn {
+            display: block;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            margin-top: 14px;
+
+            background: #17251f;
+
+            color: white;
+
+            padding: 10px;
+
+            border-radius: 9px;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+
+        .view-btn:hover {
+            background: #263b31;
+        }
+
+
+        /* ==========================================
+           EMPTY STATE
+        ========================================== */
+
+        .empty-state {
+            background: white;
+
+            border: 1px solid #e5e8e5;
+
+            border-radius: 18px;
+
+            padding: 55px 25px;
+
+            text-align: center;
+        }
+
+
+        .empty-icon {
+            font-size: 35px;
+
+            margin-bottom: 13px;
+        }
+
+
+        .empty-state h3 {
+            font-size: 18px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .empty-state p {
+            color: #7b867f;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        /* ==========================================
+           AI EXPLANATION
+        ========================================== */
+
+        .ai-info {
+            margin-top: 35px;
+
+            background: #fff6f3;
+
+            border: 1px solid #f1ddd7;
+
+            border-radius: 18px;
+
+            padding: 24px;
+        }
+
+
+        .ai-info h3 {
+            font-size: 16px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .ai-info p {
+            color: #756d69;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* ==========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 950px) {
+
+            .form-grid {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+
+            .find-btn {
+                width: 100%;
+            }
+
+
+            .results-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+
+            .nav-links a:not(.logout-btn) {
+                display: none;
+            }
+
+
+            .main {
+                width: 92%;
+
+                padding-top: 30px;
+            }
+
+
+            .hero {
+                padding: 30px 24px;
+            }
+
+
+            .hero h1 {
+                font-size: 29px;
+            }
+
+
+            .preference-card {
+                padding: 20px;
+            }
+
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     NAVBAR
+========================================== -->
+
+<nav class="navbar">
+
+
+    <a href="/" class="logo">
+        haven<span>ly</span>
+    </a>
+
+
+    <div class="nav-links">
+
+
+        <a href="/">
+            Home
+        </a>
+
+
+        <a href="/properties">
+            Explore
+        </a>
+
+
+        <a href="/tenant-dashboard">
+            Dashboard
+        </a>
+
+
+        <a href="/logout" class="logout-btn">
+            Logout
+        </a>
+
+
+    </div>
+
+
+</nav>
+
+
+
+<!-- ==========================================
+     MAIN
+========================================== -->
+
+<main class="main">
+
+
+    <!-- ==========================================
+         AI HERO
+    ========================================== -->
+
+    <section class="hero">
+
+
+        <div class="ai-badge">
+            ✨ Smart Matching
+        </div>
+
+
+        <h1>
+            Find a place that
+            <br>
+            fits you.
+        </h1>
+
+
+        <p>
+            Tell Havenly what you're looking for.
+            Our smart matching system compares your
+            preferences with available properties and
+            calculates a personalized match score.
+        </p>
+
+
+    </section>
+
+
+
+    <!-- ==========================================
+         PREFERENCES
+    ========================================== -->
+
+    <section class="preference-card">
+
+
+        <div class="preference-header">
+
+            <h2>
+                What are you looking for?
+            </h2>
+
+
+            <p>
+                Enter your preferences and let Havenly
+                find suitable properties.
+            </p>
+
+        </div>
+
+
+
+        <form
+            action="/recommendations"
+            method="GET"
+            class="form-grid"
+        >
+
+
+            <!-- LOCATION -->
+
+            <div class="field">
+
+                <label>
+                    Preferred Location
+                </label>
+
+
+                <input
+                    type="text"
+                    name="location"
+                    placeholder="e.g. Mumbai, Thane, Palghar"
+                    value="{{ selected_location }}"
+                >
+
+            </div>
+
+
+
+            <!-- BUDGET -->
+
+            <div class="field">
+
+                <label>
+                    Maximum Budget
+                </label>
+
+
+                <input
+                    type="number"
+                    name="budget"
+                    min="0"
+                    placeholder="e.g. 15000"
+                    value="{{ selected_budget }}"
+                >
+
+            </div>
+
+
+
+            <!-- PROPERTY TYPE -->
+
+            <div class="field">
+
+                <label>
+                    Property Type
+                </label>
+
+
+                <select name="type">
+
+
+                    <option value="All Types"
+                        {% if selected_type == "All Types" %}
+                        selected
+                        {% endif %}
+                    >
+                        All Types
+                    </option>
+
+
+                    <option value="PG"
+                        {% if selected_type == "PG" %}
+                        selected
+                        {% endif %}
+                    >
+                        PG
+                    </option>
+
+
+                    <option value="Apartment"
+                        {% if selected_type == "Apartment" %}
+                        selected
+                        {% endif %}
+                    >
+                        Apartment
+                    </option>
+
+
+                    <option value="Room"
+                        {% if selected_type == "Room" %}
+                        selected
+                        {% endif %}
+                    >
+                        Room
+                    </option>
+
+
+                </select>
+
+            </div>
+
+
+
+            <!-- BUTTON -->
+
+            <button
+                type="submit"
+                class="find-btn"
+            >
+                ✨ Find My Match
+            </button>
+
+
+        </form>
+
+
+    </section>
+
+
+
+    <!-- ==========================================
+         RESULTS
+    ========================================== -->
+
+    {% if recommendations %}
+
+
+    <div class="results-header">
+
+
+        <h2>
+            Recommended for You
+        </h2>
+
+
+        <div class="results-label">
+
+            {{ recommendations|length }}
+            matches found
+
+        </div>
+
+
+    </div>
+
+
+
+    <section class="results-grid">
+
+
+        {% for item in recommendations %}
+
+
+        <article class="property-card">
+
+
+            <!-- IMAGE -->
+
+            <div class="property-image">
+
+
+                {% if item["image_url"] %}
+
+                <img
+                    src="{{ item['image_url'] }}"
+                    alt="{{ item['title'] }}"
+                >
+
+                {% else %}
+
+                <div class="placeholder">
+                    🏠
+                </div>
+
+                {% endif %}
+
+
+                <div class="match-badge">
+
+                    <span>
+                        {{ item["match_score"] }}%
+                    </span>
+
+                    Match
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- CONTENT -->
+
+            <div class="property-content">
+
+
+                <div class="property-type">
+
+                    {{ item["property_type"] }}
+
+                </div>
+
+
+                <h3 class="property-title">
+
+                    {{ item["title"] }}
+
+                </h3>
+
+
+                <div class="property-location">
+
+                    📍 {{ item["location"] }}
+
+                </div>
+
+
+                <div class="rent">
+
+                    ₹{{ "{:,}".format(item["rent"]) }}
+
+                    <span>
+                        / month
+                    </span>
+
+                </div>
+
+
+
+                <!-- MATCH REASONS -->
+
+                {% if item["reasons"] %}
+
+                <div class="reasons">
+
+
+                    {% for reason in item["reasons"] %}
+
+                    <div class="reason">
+
+                        ✓ {{ reason }}
+
+                    </div>
+
+                    {% endfor %}
+
+
+                </div>
+
+                {% endif %}
+
+
+
+                <a
+                    href="/property/{{ item['id'] }}"
+                    class="view-btn"
+                >
+                    View Property
+                </a>
+
+
+            </div>
+
+
+        </article>
+
+
+        {% endfor %}
+
+
+    </section>
+
+
+    {% else %}
+
+
+    <!-- EMPTY STATE -->
+
+    <div class="empty-state">
+
+
+        <div class="empty-icon">
+            🏡
+        </div>
+
+
+        <h3>
+            Ready to find your match?
+        </h3>
+
+
+        <p>
+            Enter your preferred location, budget and
+            property type above. Havenly will calculate
+            suitable property matches for you.
+        </p>
+
+
+    </div>
+
+
+    {% endif %}
+
+
+
+    <!-- ==========================================
+         AI EXPLANATION
+    ========================================== -->
+
+    <section class="ai-info">
+
+
+        <h3>
+            🧠 How Havenly Smart Match works
+        </h3>
+
+
+        <p>
+            Havenly compares your preferences with
+            available properties using weighted matching
+            factors such as location, budget and property
+            type. Each property receives a match percentage
+            so you can quickly understand how closely it
+            fits your requirements.
+        </p>
+
+
+    </section>
+
+
+</main>
+
+
+</body>
+
+</html>

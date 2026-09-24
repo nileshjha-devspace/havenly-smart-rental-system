@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Add Property | Havenly</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f7f5ef;
+
+            color: #18251f;
+
+            min-height: 100vh;
+        }
+
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        /* =========================================
+           NAVBAR
+        ========================================= */
+
+        nav {
+
+            height: 76px;
+
+            padding: 0 7%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            background: #f7f5ef;
+
+            border-bottom: 1px solid #e5e1d8;
+        }
+
+
+        .logo {
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            color: #173c31;
+
+            letter-spacing: -1px;
+        }
+
+
+        .logo span {
+            color: #e66d54;
+        }
+
+
+        .nav-right {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+        }
+
+
+        .nav-link {
+
+            color: #56645e;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .logout-btn {
+
+            background: #173c31;
+
+            color: white;
+
+            padding: 10px 17px;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================================
+           PAGE
+        ========================================= */
+
+        .page {
+
+            max-width: 1000px;
+
+            margin: 0 auto;
+
+            padding: 55px 25px 80px;
+        }
+
+
+        .back-link {
+
+            display: inline-block;
+
+            margin-bottom: 25px;
+
+            color: #64716b;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .back-link:hover {
+            color: #e66d54;
+        }
+
+
+        .heading {
+
+            margin-bottom: 35px;
+        }
+
+
+        .heading h1 {
+
+            font-size: 42px;
+
+            letter-spacing: -1.5px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .heading p {
+
+            color: #737d77;
+
+            font-size: 15px;
+        }
+
+
+        /* =========================================
+           FORM CARD
+        ========================================= */
+
+        .form-card {
+
+            background: white;
+
+            border: 1px solid #e5e1d8;
+
+            border-radius: 24px;
+
+            padding: 40px;
+
+            box-shadow:
+                0 15px 40px rgba(
+                    23,
+                    60,
+                    49,
+                    0.06
+                );
+        }
+
+
+        .form-section {
+
+            margin-bottom: 35px;
+        }
+
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .section-title {
+
+            font-size: 19px;
+
+            font-weight: 800;
+
+            margin-bottom: 20px;
+
+            color: #173c31;
+        }
+
+
+        .section-title span {
+
+            color: #e66d54;
+
+            margin-right: 6px;
+        }
+
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 22px;
+        }
+
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+
+        .field label {
+
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            color: #43534b;
+
+            margin-bottom: 8px;
+        }
+
+
+        .required {
+            color: #e66d54;
+        }
+
+
+        .field input,
+        .field textarea,
+        .field select {
+
+            width: 100%;
+
+            border: 1px solid #ddd9ce;
+
+            border-radius: 11px;
+
+            padding: 13px 14px;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            outline: none;
+
+            background: #fff;
+
+            color: #18251f;
+
+            transition: 0.2s;
+        }
+
+
+        .field input:focus,
+        .field textarea:focus,
+        .field select:focus {
+
+            border-color: #173c31;
+
+            box-shadow:
+                0 0 0 3px rgba(
+                    23,
+                    60,
+                    49,
+                    0.08
+                );
+        }
+
+
+        .field textarea {
+
+            min-height: 130px;
+
+            resize: vertical;
+        }
+
+
+        .field small {
+
+            display: block;
+
+            margin-top: 7px;
+
+            color: #8a938e;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================================
+           PROPERTY TYPE
+        ========================================= */
+
+        .type-options {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+        }
+
+
+        .type-option {
+
+            position: relative;
+        }
+
+
+        .type-option input {
+
+            position: absolute;
+
+            opacity: 0;
+
+            pointer-events: none;
+        }
+
+
+        .type-option label {
+
+            display: block;
+
+            text-align: center;
+
+            padding: 15px;
+
+            border: 1px solid #ddd9ce;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-weight: 700;
+
+            color: #56645e;
+
+            transition: 0.2s;
+        }
+
+
+        .type-option input:checked + label {
+
+            background: #173c31;
+
+            color: white;
+
+            border-color: #173c31;
+        }
+
+
+        /* =========================================
+           IMAGE UPLOAD
+        ========================================= */
+
+        .upload-box {
+
+            border: 2px dashed #d8d4c9;
+
+            border-radius: 17px;
+
+            padding: 32px 25px;
+
+            text-align: center;
+
+            background: #faf9f5;
+
+            transition: 0.2s;
+        }
+
+
+        .upload-box:hover {
+
+            border-color: #173c31;
+
+            background: #f5f8f5;
+        }
+
+
+        .upload-icon {
+
+            width: 55px;
+
+            height: 55px;
+
+            margin: 0 auto 14px;
+
+            border-radius: 15px;
+
+            background: #e7eee9;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 25px;
+        }
+
+
+        .upload-box h3 {
+
+            font-size: 16px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .upload-box p {
+
+            color: #7b8580;
+
+            font-size: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .file-input {
+
+            display: inline-block;
+
+            max-width: 100%;
+
+            font-size: 13px;
+        }
+
+
+        .file-input::file-selector-button {
+
+            border: none;
+
+            background: #173c31;
+
+            color: white;
+
+            padding: 10px 16px;
+
+            border-radius: 9px;
+
+            margin-right: 10px;
+
+            cursor: pointer;
+
+            font-weight: 700;
+        }
+
+
+        .file-note {
+
+            margin-top: 12px;
+
+            font-size: 11px;
+
+            color: #969e99;
+        }
+
+
+        /* =========================================
+           AVAILABILITY
+        ========================================= */
+
+        .availability {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 16px;
+
+            border: 1px solid #e3e0d7;
+
+            border-radius: 12px;
+
+            background: #faf9f5;
+        }
+
+
+        .availability input {
+
+            width: 18px;
+
+            height: 18px;
+
+            accent-color: #173c31;
+
+            cursor: pointer;
+        }
+
+
+        .availability label {
+
+            margin: 0;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            color: #43534b;
+        }
+
+
+        /* =========================================
+           ERROR
+        ========================================= */
+
+        .error-message {
+
+            background: #fff0ed;
+
+            color: #b94c39;
+
+            border: 1px solid #f2c9c1;
+
+            padding: 14px 17px;
+
+            border-radius: 11px;
+
+            margin-bottom: 25px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+           ACTIONS
+        ========================================= */
+
+        .actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 12px;
+
+            padding-top: 10px;
+        }
+
+
+        .cancel-btn {
+
+            padding: 13px 22px;
+
+            border: 1px solid #ddd9ce;
+
+            background: white;
+
+            border-radius: 11px;
+
+            font-weight: 700;
+
+            color: #56645e;
+        }
+
+
+        .submit-btn {
+
+            border: none;
+
+            background: #173c31;
+
+            color: white;
+
+            padding: 14px 25px;
+
+            border-radius: 11px;
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        .submit-btn:hover {
+
+            background: #245648;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 700px) {
+
+            nav {
+                padding: 0 5%;
+            }
+
+
+            .nav-link {
+                display: none;
+            }
+
+
+            .page {
+                padding: 35px 18px 60px;
+            }
+
+
+            .heading h1 {
+                font-size: 34px;
+            }
+
+
+            .form-card {
+                padding: 25px 20px;
+            }
+
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .full-width {
+                grid-column: auto;
+            }
+
+
+            .type-options {
+                grid-template-columns: 1fr;
+            }
+
+
+            .actions {
+                flex-direction: column-reverse;
+            }
+
+
+            .submit-btn,
+            .cancel-btn {
+                width: 100%;
+
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         NAVBAR
+    ========================================== -->
+
+    <nav>
+
+        <a href="/" class="logo">
+            Haven<span>ly</span>
+        </a>
+
+
+        <div class="nav-right">
+
+            <a
+                href="/owner-dashboard"
+                class="nav-link"
+            >
+                Dashboard
+            </a>
+
+
+            <a
+                href="/logout"
+                class="logout-btn"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================================
+         PAGE
+    ========================================== -->
+
+    <main class="page">
+
+
+        <a
+            href="/owner-dashboard"
+            class="back-link"
+        >
+            ← Back to Dashboard
+        </a>
+
+
+        <div class="heading">
+
+            <h1>
+                Add a Property
+            </h1>
+
+            <p>
+                List your property and let tenants
+                discover their next home.
+            </p>
+
+        </div>
+
+
+        <!-- =====================================
+             FORM
+        ====================================== -->
+
+        <div class="form-card">
+
+
+            {% if error %}
+
+                <div class="error-message">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <form
+                action="/add-property"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+
+                <!-- =================================
+                     BASIC DETAILS
+                ================================== -->
+
+                <div class="form-section">
+
+                    <div class="section-title">
+                        <span>01</span>
+                        Property Details
+                    </div>
+
+
+                    <div class="form-grid">
+
+
+                        <div class="field full-width">
+
+                            <label for="title">
+                                Property Title
+                                <span class="required">*</span>
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="title"
+                                name="title"
+                                placeholder="e.g. Modern 1BHK Apartment"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="location">
+                                Location
+                                <span class="required">*</span>
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                placeholder="e.g. Andheri, Mumbai"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="rent">
+                                Monthly Rent (₹)
+                                <span class="required">*</span>
+                            </label>
+
+
+                            <input
+                                type="number"
+                                id="rent"
+                                name="rent"
+                                placeholder="e.g. 15000"
+                                min="1"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="field full-width">
+
+                            <label>
+                                Property Type
+                                <span class="required">*</span>
+                            </label>
+
+
+                            <div class="type-options">
+
+
+                                <div class="type-option">
+
+                                    <input
+                                        type="radio"
+                                        id="type-pg"
+                                        name="property_type"
+                                        value="PG"
+                                        required
+                                    >
+
+                                    <label for="type-pg">
+                                        🏠 PG
+                                    </label>
+
+                                </div>
+
+
+                                <div class="type-option">
+
+                                    <input
+                                        type="radio"
+                                        id="type-apartment"
+                                        name="property_type"
+                                        value="Apartment"
+                                    >
+
+                                    <label for="type-apartment">
+                                        🏢 Apartment
+                                    </label>
+
+                                </div>
+
+
+                                <div class="type-option">
+
+                                    <input
+                                        type="radio"
+                                        id="type-room"
+                                        name="property_type"
+                                        value="Room"
+                                    >
+
+                                    <label for="type-room">
+                                        🛏️ Room
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="field full-width">
+
+                            <label for="description">
+                                Description
+                            </label>
+
+
+                            <textarea
+                                id="description"
+                                name="description"
+                                placeholder="Describe the property, nearby facilities, amenities, rules, etc."
+                            ></textarea>
+
+
+                            <small>
+                                Give tenants enough information
+                                to understand your property.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     PROPERTY IMAGES
+                ================================== -->
+
+                <div class="form-section">
+
+                    <div class="section-title">
+                        <span>02</span>
+                        Property Images
+                    </div>
+
+
+                    <div class="upload-box">
+
+                        <div class="upload-icon">
+                            📸
+                        </div>
+
+
+                        <h3>
+                            Add property photos
+                        </h3>
+
+
+                        <p>
+                            Upload clear photos of the
+                            room, property and surroundings.
+                        </p>
+
+
+                        <input
+                            type="file"
+                            name="property_images"
+                            id="property_images"
+                            class="file-input"
+                            accept="image/png,image/jpeg,image/jpg,image/webp"
+                            multiple
+                        >
+
+
+                        <div class="file-note">
+                            JPG, JPEG, PNG or WEBP •
+                            You can select multiple images
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     AVAILABILITY
+                ================================== -->
+
+                <div class="form-section">
+
+                    <div class="section-title">
+                        <span>03</span>
+                        Availability
+                    </div>
+
+
+                    <div class="availability">
+
+                        <input
+                            type="checkbox"
+                            id="available"
+                            name="available"
+                            value="1"
+                            checked
+                        >
+
+
+                        <label for="available">
+                            This property is currently available
+                            for rent
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     ACTIONS
+                ================================== -->
+
+                <div class="actions">
+
+                    <a
+                        href="/owner-dashboard"
+                        class="cancel-btn"
+                    >
+                        Cancel
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="submit-btn"
+                    >
+                        Add Property →
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+</body>
+
+</html>

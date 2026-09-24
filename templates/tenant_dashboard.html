@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Dashboard | Havenly</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background: #f7f7f5;
+
+            color: #17211b;
+
+        }
+
+
+        /* ---------------- NAVBAR ---------------- */
+
+        .navbar {
+
+            height: 76px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            background: white;
+
+            border-bottom: 1px solid #e8e8e4;
+
+        }
+
+
+        .logo {
+
+            font-size: 26px;
+
+            font-weight: 700;
+
+        }
+
+
+        .logo span {
+
+            color: #e56b4f;
+
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            gap: 25px;
+
+            align-items: center;
+
+        }
+
+
+        .nav-links a {
+
+            text-decoration: none;
+
+            color: #17211b;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+
+        .nav-links a:hover {
+
+            color: #e56b4f;
+
+        }
+
+
+        .logout-btn {
+
+            background: #17211b;
+
+            color: white !important;
+
+            padding: 10px 17px;
+
+            border-radius: 9px;
+
+        }
+
+
+        .logout-btn:hover {
+
+            background: #26372c;
+
+        }
+
+
+        /* ---------------- MAIN ---------------- */
+
+        .container {
+
+            width: 86%;
+
+            max-width: 1150px;
+
+            margin: 45px auto 70px;
+
+        }
+
+
+        /* ---------------- WELCOME ---------------- */
+
+        .welcome {
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .welcome-label {
+
+            color: #e56b4f;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .welcome h1 {
+
+            font-size: 38px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .welcome h1 span {
+
+            color: #e56b4f;
+
+        }
+
+
+        .welcome p {
+
+            color: #69736c;
+
+            font-size: 16px;
+
+        }
+
+
+        .user-email {
+
+            display: inline-block;
+
+            margin-top: 10px;
+
+            color: #858d88;
+
+            font-size: 13px;
+
+        }
+
+
+        /* ---------------- STATS ---------------- */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 40px;
+
+        }
+
+
+        .stat-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 18px;
+
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+
+        }
+
+
+        .stat-label {
+
+            color: #69736c;
+
+            font-size: 14px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .stat-value {
+
+            font-size: 30px;
+
+            font-weight: 700;
+
+        }
+
+
+        /* ---------------- SECTION ---------------- */
+
+        .section-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .section-header h2 {
+
+            font-size: 25px;
+
+        }
+
+
+        .browse-btn {
+
+            text-decoration: none;
+
+            background: #17211b;
+
+            color: white;
+
+            padding: 11px 18px;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+
+        .browse-btn:hover {
+
+            background: #26372c;
+
+        }
+
+
+        /* ---------------- REQUEST CARDS ---------------- */
+
+        .requests {
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 22px;
+
+        }
+
+
+        .request-card {
+
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 24px;
+
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+
+            transition: 0.2s;
+
+        }
+
+
+        .request-card:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+
+        }
+
+
+        .property-title {
+
+            font-size: 21px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .location {
+
+            color: #69736c;
+
+            font-size: 14px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .request-details {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            border-top: 1px solid #eeeeea;
+
+            padding-top: 18px;
+
+        }
+
+
+        .rent {
+
+            font-size: 19px;
+
+            font-weight: 700;
+
+        }
+
+
+        .rent span {
+
+            color: #777;
+
+            font-size: 12px;
+
+            font-weight: normal;
+
+        }
+
+
+        /* ---------------- STATUS ---------------- */
+
+        .status {
+
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .pending {
+
+            background: #fff3cd;
+
+            color: #856404;
+
+        }
+
+
+        .approved {
+
+            background: #e8f7ed;
+
+            color: #28733a;
+
+        }
+
+
+        .rejected {
+
+            background: #ffe9e9;
+
+            color: #a33a3a;
+
+        }
+
+
+        .request-date {
+
+            color: #8a928d;
+
+            font-size: 12px;
+
+            margin-top: 16px;
+
+        }
+
+
+        /* ---------------- EMPTY STATE ---------------- */
+
+        .empty-state {
+
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 55px 30px;
+
+            text-align: center;
+
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+
+        }
+
+
+        .empty-icon {
+
+            font-size: 45px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .empty-state h3 {
+
+            font-size: 22px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .empty-state p {
+
+            color: #69736c;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        /* ---------------- FOOTER ---------------- */
+
+        footer {
+
+            text-align: center;
+
+            padding: 30px;
+
+            color: #8a928d;
+
+            font-size: 13px;
+
+        }
+
+
+        /* ---------------- MOBILE ---------------- */
+
+        @media (max-width: 750px) {
+
+            .stats {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .requests {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .nav-links {
+
+                gap: 10px;
+
+            }
+
+
+            .nav-links a:not(.logout-btn) {
+
+                display: none;
+
+            }
+
+
+            .welcome h1 {
+
+                font-size: 30px;
+
+            }
+
+
+            .section-header {
+
+                align-items: flex-start;
+
+                gap: 15px;
+
+                flex-direction: column;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+
+        <div class="logo">
+
+            haven<span>ly</span>
+
+        </div>
+
+
+        <div class="nav-links">
+
+
+            <a href="/">
+
+                Home
+
+            </a>
+
+
+            <a href="/properties">
+
+                Explore
+
+            </a>
+
+
+            <a
+                href="/logout"
+                class="logout-btn"
+            >
+
+                Logout
+
+            </a>
+
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="container">
+
+
+        <!-- WELCOME -->
+
+        <section class="welcome">
+
+
+            <div class="welcome-label">
+
+                Tenant Dashboard
+
+            </div>
+
+
+            {% if user %}
+
+            <h1>
+
+                Welcome back,
+
+                <span>
+
+                    {{ user['name'] }}
+
+                </span>
+
+                👋
+
+            </h1>
+
+
+            <p>
+
+                Here's an overview of your rental activity.
+
+            </p>
+
+
+            <div class="user-email">
+
+                {{ user['email'] }}
+
+            </div>
+
+
+            {% else %}
+
+            <h1>
+
+                Welcome back 👋
+
+            </h1>
+
+
+            <p>
+
+                Track your rental requests and find your next home with Havenly.
+
+            </p>
+
+            {% endif %}
+
+
+        </section>
+
+
+
+        <!-- STATS -->
+
+        <section class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+
+                    Total Requests
+
+                </div>
+
+
+                <div class="stat-value">
+
+                    {{ requests|length }}
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+
+                    Pending Requests
+
+                </div>
+
+
+                <div class="stat-value">
+
+                    {{ requests|selectattr('status', 'equalto', 'Pending')|list|length }}
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+
+                    Approved Requests
+
+                </div>
+
+
+                <div class="stat-value">
+
+                    {{ requests|selectattr('status', 'equalto', 'Approved')|list|length }}
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- RENTAL REQUESTS -->
+
+        <section>
+
+
+            <div class="section-header">
+
+
+                <h2>
+
+                    My Rental Requests
+
+                </h2>
+
+
+                <a
+                    href="/properties"
+                    class="browse-btn"
+                >
+
+                    + Find Property
+
+                </a>
+
+
+            </div>
+
+
+
+            {% if requests %}
+
+
+            <div class="requests">
+
+
+                {% for rental_request in requests %}
+
+
+                <div class="request-card">
+
+
+                    <div class="property-title">
+
+                        {{ rental_request['title'] }}
+
+                    </div>
+
+
+                    <div class="location">
+
+                        📍 {{ rental_request['location'] }}
+
+                    </div>
+
+
+
+                    <div class="request-details">
+
+
+                        <div class="rent">
+
+                            ₹{{ "{:,}".format(rental_request['rent']) }}
+
+                            <span>
+
+                                / month
+
+                            </span>
+
+                        </div>
+
+
+
+                        {% if rental_request['status'] == 'Pending' %}
+
+                        <div class="status pending">
+
+                            Pending
+
+                        </div>
+
+
+                        {% elif rental_request['status'] == 'Approved' %}
+
+                        <div class="status approved">
+
+                            Approved
+
+                        </div>
+
+
+                        {% elif rental_request['status'] == 'Rejected' %}
+
+                        <div class="status rejected">
+
+                            Rejected
+
+                        </div>
+
+
+                        {% else %}
+
+                        <div class="status pending">
+
+                            {{ rental_request['status'] }}
+
+                        </div>
+
+                        {% endif %}
+
+
+                    </div>
+
+
+
+                    <div class="request-date">
+
+                        Requested on:
+
+                        {{ rental_request['request_date'] }}
+
+                    </div>
+
+
+                </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+            {% else %}
+
+
+            <div class="empty-state">
+
+
+                <div class="empty-icon">
+
+                    🏠
+
+                </div>
+
+
+                <h3>
+
+                    No rental requests yet
+
+                </h3>
+
+
+                <p>
+
+                    Start exploring properties and find a place that feels like home.
+
+                </p>
+
+
+                <a
+                    href="/properties"
+                    class="browse-btn"
+                >
+
+                    Explore Properties
+
+                </a>
+
+
+            </div>
+
+
+            {% endif %}
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <footer>
+
+        © 2026 Havenly — Smart Rental & PG Management System
+
+    </footer>
+
+
+</body>
+
+</html>

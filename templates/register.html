@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | Havenly</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 30px;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background: #f7f7f5;
+
+            color: #17211b;
+
+        }
+
+
+        .page {
+
+            width: 100%;
+
+            max-width: 1050px;
+
+            min-height: 650px;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            background: white;
+
+            border-radius: 25px;
+
+            overflow: hidden;
+
+            box-shadow: 0 20px 60px rgba(0,0,0,0.10);
+
+        }
+
+
+        /* ---------------- LEFT SIDE ---------------- */
+
+        .intro {
+
+            background: #17211b;
+
+            color: white;
+
+            padding: 55px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: space-between;
+
+        }
+
+
+        .logo {
+
+            font-size: 28px;
+
+            font-weight: 700;
+
+        }
+
+
+        .logo span {
+
+            color: #e56b4f;
+
+        }
+
+
+        .intro-content {
+
+            margin-top: 30px;
+
+        }
+
+
+        .intro-label {
+
+            color: #f08a6f;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .intro h1 {
+
+            font-size: 43px;
+
+            line-height: 1.1;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .intro p {
+
+            color: #cbd2cd;
+
+            line-height: 1.7;
+
+            font-size: 15px;
+
+            max-width: 420px;
+
+        }
+
+
+        .features {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 14px;
+
+            margin-top: 35px;
+
+        }
+
+
+        .feature {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            color: #d9dfdb;
+
+            font-size: 14px;
+
+        }
+
+
+        .feature-icon {
+
+            width: 32px;
+
+            height: 32px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: rgba(255,255,255,0.08);
+
+            border-radius: 8px;
+
+        }
+
+
+        .copyright {
+
+            color: #89938d;
+
+            font-size: 12px;
+
+        }
+
+
+        /* ---------------- FORM SIDE ---------------- */
+
+        .form-section {
+
+            padding: 55px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+        }
+
+
+        .form-header {
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .form-header h2 {
+
+            font-size: 30px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .form-header p {
+
+            color: #69736c;
+
+            font-size: 14px;
+
+        }
+
+
+        .form-group {
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .form-group input {
+
+            width: 100%;
+
+            padding: 14px 15px;
+
+            border: 1px solid #deded9;
+
+            border-radius: 10px;
+
+            font-size: 14px;
+
+            outline: none;
+
+            background: #fbfbfa;
+
+        }
+
+
+        .form-group input:focus {
+
+            border-color: #17211b;
+
+            background: white;
+
+        }
+
+
+        .register-btn {
+
+            width: 100%;
+
+            border: none;
+
+            background: #17211b;
+
+            color: white;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            margin-top: 5px;
+
+        }
+
+
+        .register-btn:hover {
+
+            background: #26372c;
+
+        }
+
+
+        .login-link {
+
+            text-align: center;
+
+            margin-top: 22px;
+
+            font-size: 14px;
+
+            color: #69736c;
+
+        }
+
+
+        .login-link a {
+
+            color: #e56b4f;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+        }
+
+
+        .back-home {
+
+            text-align: center;
+
+            margin-top: 20px;
+
+        }
+
+
+        .back-home a {
+
+            text-decoration: none;
+
+            color: #17211b;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+        }
+
+
+        /* ---------------- MOBILE ---------------- */
+
+        @media (max-width: 750px) {
+
+            body {
+
+                padding: 15px;
+
+            }
+
+
+            .page {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .intro {
+
+                padding: 35px;
+
+            }
+
+
+            .intro h1 {
+
+                font-size: 34px;
+
+            }
+
+
+            .copyright {
+
+                margin-top: 35px;
+
+            }
+
+
+            .form-section {
+
+                padding: 35px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="page">
+
+
+        <!-- LEFT INTRODUCTION -->
+
+        <section class="intro">
+
+
+            <div>
+
+
+                <div class="logo">
+
+                    haven<span>ly</span>
+
+                </div>
+
+
+                <div class="intro-content">
+
+
+                    <div class="intro-label">
+
+                        Welcome to Havenly
+
+                    </div>
+
+
+                    <h1>
+
+                        Your next home starts here.
+
+                    </h1>
+
+
+                    <p>
+
+                        Create your Havenly account and start
+                        discovering PGs, rooms and apartments
+                        that match your needs.
+
+                    </p>
+
+
+                    <div class="features">
+
+
+                        <div class="feature">
+
+                            <div class="feature-icon">
+
+                                🔎
+
+                            </div>
+
+                            <span>
+
+                                Discover properties easily
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="feature">
+
+                            <div class="feature-icon">
+
+                                🏠
+
+                            </div>
+
+                            <span>
+
+                                View detailed property listings
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="feature">
+
+                            <div class="feature-icon">
+
+                                📩
+
+                            </div>
+
+                            <span>
+
+                                Track your rental requests
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="copyright">
+
+                © 2026 Havenly
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- REGISTRATION FORM -->
+
+        <section class="form-section">
+
+
+            <div class="form-header">
+
+                <h2>
+
+                    Create your account
+
+                </h2>
+
+
+                <p>
+
+                    Join Havenly and start your rental journey.
+
+                </p>
+
+            </div>
+
+
+            <form
+                action="/register"
+                method="POST"
+            >
+
+
+                <div class="form-group">
+
+                    <label for="name">
+
+                        Full Name
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="email">
+
+                        Email Address
+
+                    </label>
+
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="password">
+
+                        Password
+
+                    </label>
+
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a password"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+
+                <button
+                    type="submit"
+                    class="register-btn"
+                >
+
+                    Create Account
+
+                </button>
+
+
+            </form>
+
+
+            <div class="login-link">
+
+                Already have an account?
+
+                <a href="/login">
+
+                    Login
+
+                </a>
+
+            </div>
+
+
+            <div class="back-home">
+
+                <a href="/">
+
+                    ← Back to Havenly
+
+                </a>
+
+            </div>
+
+
+        </section>
+
+
+    </div>
+
+
+</body>
+
+</html>

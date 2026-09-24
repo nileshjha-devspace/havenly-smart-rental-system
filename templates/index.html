@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Havenly | Smart Rental & PG Management</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f7f5ef;
+
+            color: #18251f;
+
+            line-height: 1.6;
+        }
+
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        /* =========================================
+           NAVBAR
+        ========================================= */
+
+        nav {
+
+            width: 100%;
+
+            padding: 20px 7%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            background: #f7f5ef;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+
+            border-bottom: 1px solid #e8e5dc;
+        }
+
+
+        .logo {
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            letter-spacing: -1px;
+
+            color: #173c31;
+        }
+
+
+        .logo span {
+            color: #e66d54;
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 26px;
+        }
+
+
+        .nav-links a {
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            color: #43534b;
+
+            transition: 0.2s;
+        }
+
+
+        .nav-links a:hover {
+            color: #e66d54;
+        }
+
+
+        .nav-ai {
+
+            background: #f4ded8;
+
+            color: #173c31 !important;
+
+            padding: 10px 15px;
+
+            border-radius: 10px;
+
+            font-weight: 800 !important;
+        }
+
+
+        .nav-ai:hover {
+            background: #f1cfc6;
+        }
+
+
+        .nav-btn {
+
+            background: #173c31 !important;
+
+            color: white !important;
+
+            padding: 11px 20px;
+
+            border-radius: 10px;
+        }
+
+
+        /* =========================================
+           HERO
+        ========================================= */
+
+        .hero {
+
+            min-height: 610px;
+
+            padding: 90px 7%;
+
+            display: grid;
+
+            grid-template-columns: 1.05fr 0.95fr;
+
+            gap: 70px;
+
+            align-items: center;
+        }
+
+
+        .hero-content h1 {
+
+            font-size: clamp(48px, 6vw, 78px);
+
+            line-height: 1.02;
+
+            letter-spacing: -4px;
+
+            max-width: 700px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .hero-content h1 span {
+            color: #e66d54;
+        }
+
+
+        .hero-content p {
+
+            font-size: 18px;
+
+            color: #65716b;
+
+            max-width: 590px;
+
+            margin-bottom: 35px;
+        }
+
+
+        .hero-buttons {
+
+            display: flex;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .primary-btn {
+
+            display: inline-block;
+
+            background: #173c31;
+
+            color: white;
+
+            padding: 15px 25px;
+
+            border-radius: 12px;
+
+            font-weight: 700;
+
+            transition: 0.25s;
+        }
+
+
+        .primary-btn:hover {
+
+            transform: translateY(-2px);
+
+            background: #245648;
+        }
+
+
+        .secondary-btn {
+
+            display: inline-block;
+
+            background: white;
+
+            color: #173c31;
+
+            padding: 15px 25px;
+
+            border-radius: 12px;
+
+            font-weight: 700;
+
+            border: 1px solid #ddd9ce;
+
+            transition: 0.25s;
+        }
+
+
+        .secondary-btn:hover {
+
+            transform: translateY(-2px);
+
+            border-color: #173c31;
+        }
+
+
+        .ai-hero-btn {
+
+            background: #f4ded8;
+
+            border-color: #f4ded8;
+        }
+
+
+        .ai-hero-btn:hover {
+            background: #f1cfc6;
+        }
+
+
+        /* =========================================
+           HERO VISUAL
+        ========================================= */
+
+        .hero-visual {
+
+            position: relative;
+
+            min-height: 430px;
+        }
+
+
+        .hero-card {
+
+            position: absolute;
+
+            width: 100%;
+
+            max-width: 510px;
+
+            height: 390px;
+
+            right: 0;
+
+            top: 10px;
+
+            border-radius: 28px;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #d9e4dc,
+                    #a9c3b5
+                );
+
+            box-shadow:
+                0 25px 70px rgba(
+                    23,
+                    60,
+                    49,
+                    0.15
+                );
+        }
+
+
+        .hero-house {
+
+            position: absolute;
+
+            width: 260px;
+
+            height: 210px;
+
+            background: #fffaf0;
+
+            border-radius: 18px;
+
+            left: 50%;
+
+            bottom: 55px;
+
+            transform: translateX(-50%);
+
+            box-shadow:
+                0 20px 40px rgba(
+                    0,
+                    0,
+                    0,
+                    0.12
+                );
+        }
+
+
+        .hero-roof {
+
+            position: absolute;
+
+            width: 0;
+
+            height: 0;
+
+            border-left: 150px solid transparent;
+
+            border-right: 150px solid transparent;
+
+            border-bottom: 120px solid #173c31;
+
+            left: 50%;
+
+            top: -100px;
+
+            transform: translateX(-50%);
+        }
+
+
+        .hero-window {
+
+            position: absolute;
+
+            width: 65px;
+
+            height: 65px;
+
+            background: #d9a96e;
+
+            border: 6px solid #173c31;
+
+            border-radius: 8px;
+
+            top: 55px;
+
+            left: 35px;
+        }
+
+
+        .hero-window.two {
+
+            left: auto;
+
+            right: 35px;
+        }
+
+
+        .hero-door {
+
+            position: absolute;
+
+            width: 62px;
+
+            height: 110px;
+
+            background: #b87552;
+
+            bottom: 0;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            border-radius: 8px 8px 0 0;
+        }
+
+
+        .floating-card {
+
+            position: absolute;
+
+            background: white;
+
+            padding: 17px 20px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 15px 40px rgba(
+                    0,
+                    0,
+                    0,
+                    0.12
+                );
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .floating-card.one {
+
+            left: -25px;
+
+            top: 70px;
+        }
+
+
+        .floating-card.two {
+
+            right: -15px;
+
+            bottom: 45px;
+        }
+
+
+        .floating-icon {
+
+            display: inline-flex;
+
+            width: 28px;
+
+            height: 28px;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background: #f7d5cb;
+
+            margin-right: 7px;
+        }
+
+
+        /* =========================================
+           STATS
+        ========================================= */
+
+        .stats {
+
+            padding: 0 7% 80px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .stat-card {
+
+            background: white;
+
+            padding: 28px;
+
+            border-radius: 18px;
+
+            border: 1px solid #e7e3d9;
+        }
+
+
+        .stat-number {
+
+            font-size: 32px;
+
+            font-weight: 800;
+
+            color: #173c31;
+        }
+
+
+        .stat-label {
+
+            color: #737d77;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           SMART MATCH SECTION
+        ========================================= */
+
+        .smart-match {
+
+            margin: 20px 7% 100px;
+
+            background: #173c31;
+
+            color: white;
+
+            border-radius: 30px;
+
+            padding: 55px 60px;
+
+            display: grid;
+
+            grid-template-columns: 1.3fr 0.7fr;
+
+            gap: 50px;
+
+            align-items: center;
+
+            overflow: hidden;
+
+            position: relative;
+        }
+
+
+        .smart-match::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 300px;
+
+            height: 300px;
+
+            border-radius: 50%;
+
+            background: rgba(
+                230,
+                109,
+                84,
+                0.18
+            );
+
+            right: -100px;
+
+            top: -100px;
+        }
+
+
+        .smart-label {
+
+            display: inline-block;
+
+            background: rgba(
+                255,
+                255,
+                255,
+                0.12
+            );
+
+            padding: 8px 14px;
+
+            border-radius: 30px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            margin-bottom: 18px;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        .smart-match h2 {
+
+            font-size: 42px;
+
+            line-height: 1.1;
+
+            letter-spacing: -1.5px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .smart-match h2 span {
+            color: #f49b87;
+        }
+
+
+        .smart-match p {
+
+            color: #d5dfda;
+
+            max-width: 650px;
+
+            margin-bottom: 28px;
+
+            font-size: 16px;
+        }
+
+
+        .smart-btn {
+
+            display: inline-block;
+
+            background: #f49b87;
+
+            color: #173c31;
+
+            padding: 15px 24px;
+
+            border-radius: 12px;
+
+            font-weight: 800;
+
+            transition: 0.2s;
+        }
+
+
+        .smart-btn:hover {
+
+            transform: translateY(-2px);
+
+            background: #ffb19f;
+        }
+
+
+        .smart-visual {
+
+            position: relative;
+
+            min-height: 220px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            z-index: 2;
+        }
+
+
+        .ai-orb {
+
+            width: 170px;
+
+            height: 170px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle at 35% 30%,
+                    #f49b87,
+                    #c95d49
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 60px;
+
+            box-shadow:
+                0 25px 60px rgba(
+                    0,
+                    0,
+                    0,
+                    0.2
+                );
+        }
+
+
+        .match-pill {
+
+            position: absolute;
+
+            background: white;
+
+            color: #173c31;
+
+            padding: 12px 17px;
+
+            border-radius: 12px;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 10px 30px rgba(
+                    0,
+                    0,
+                    0,
+                    0.15
+                );
+        }
+
+
+        .match-pill.one {
+
+            top: 10px;
+
+            right: 5px;
+        }
+
+
+        .match-pill.two {
+
+            bottom: 5px;
+
+            left: 5px;
+        }
+
+
+        /* =========================================
+           QUICK ACCESS
+        ========================================= */
+
+        .section {
+
+            padding: 0 7% 100px;
+        }
+
+
+        .section-heading {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: end;
+
+            margin-bottom: 35px;
+
+            gap: 30px;
+        }
+
+
+        .section-heading h2 {
+
+            font-size: 38px;
+
+            letter-spacing: -1.5px;
+        }
+
+
+        .section-heading p {
+
+            color: #737d77;
+
+            max-width: 450px;
+
+            font-size: 15px;
+        }
+
+
+        .quick-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 22px;
+        }
+
+
+        .quick-card {
+
+            background: white;
+
+            border: 1px solid #e5e1d8;
+
+            padding: 30px;
+
+            border-radius: 20px;
+
+            transition: 0.25s;
+        }
+
+
+        .quick-card:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 18px 45px rgba(
+                    23,
+                    60,
+                    49,
+                    0.09
+                );
+        }
+
+
+        .quick-icon {
+
+            width: 50px;
+
+            height: 50px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background: #f4ded8;
+
+            font-size: 23px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .quick-card h3 {
+
+            font-size: 21px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .quick-card p {
+
+            color: #737d77;
+
+            font-size: 14px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .quick-link {
+
+            color: #e66d54;
+
+            font-weight: 800;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           HOW IT WORKS
+        ========================================= */
+
+        .how {
+
+            background: #eeece5;
+
+            padding: 90px 7%;
+        }
+
+
+        .steps {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 30px;
+
+            margin-top: 40px;
+        }
+
+
+        .step {
+
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 30px;
+
+            position: relative;
+        }
+
+
+        .step-number {
+
+            width: 42px;
+
+            height: 42px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #173c31;
+
+            color: white;
+
+            font-weight: 800;
+
+            margin-bottom: 22px;
+        }
+
+
+        .step h3 {
+
+            font-size: 20px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .step p {
+
+            color: #737d77;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           AI INFO
+        ========================================= */
+
+        .ai-section {
+
+            padding: 100px 7%;
+
+            display: grid;
+
+            grid-template-columns: 0.9fr 1.1fr;
+
+            gap: 70px;
+
+            align-items: center;
+        }
+
+
+        .ai-box {
+
+            background: #e0ebe4;
+
+            border-radius: 28px;
+
+            min-height: 360px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 100px;
+        }
+
+
+        .ai-content h2 {
+
+            font-size: 42px;
+
+            line-height: 1.1;
+
+            margin-bottom: 20px;
+        }
+
+
+        .ai-content p {
+
+            color: #6d7871;
+
+            margin-bottom: 25px;
+        }
+
+
+        .feature-list {
+
+            list-style: none;
+
+            margin-bottom: 28px;
+        }
+
+
+        .feature-list li {
+
+            margin-bottom: 12px;
+
+            font-weight: 600;
+        }
+
+
+        .feature-list li::before {
+
+            content: "✓";
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 23px;
+
+            height: 23px;
+
+            border-radius: 50%;
+
+            background: #173c31;
+
+            color: white;
+
+            font-size: 12px;
+
+            margin-right: 10px;
+        }
+
+
+        .ai-assistant-btn {
+
+            display: inline-block;
+
+            background: #173c31;
+
+            color: white;
+
+            padding: 14px 22px;
+
+            border-radius: 12px;
+
+            font-weight: 800;
+
+            transition: 0.25s;
+        }
+
+
+        .ai-assistant-btn:hover {
+
+            transform: translateY(-2px);
+
+            background: #245648;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        footer {
+
+            background: #132f27;
+
+            color: white;
+
+            padding: 50px 7% 30px;
+        }
+
+
+        .footer-main {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 40px;
+
+            padding-bottom: 35px;
+
+            border-bottom: 1px solid
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.12
+                );
+        }
+
+
+        .footer-logo {
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            margin-bottom: 10px;
+        }
+
+
+        .footer-logo span {
+            color: #f49b87;
+        }
+
+
+        .footer-main p {
+
+            color: #b9c6c0;
+
+            max-width: 400px;
+
+            font-size: 14px;
+        }
+
+
+        .footer-links {
+
+            display: flex;
+
+            gap: 25px;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+        }
+
+
+        .footer-links a {
+
+            color: #d6dfdb;
+
+            font-size: 14px;
+        }
+
+
+        .footer-links a:hover {
+            color: #f49b87;
+        }
+
+
+        .footer-ai {
+
+            font-weight: 800;
+
+            color: #f49b87 !important;
+        }
+
+
+        .footer-bottom {
+
+            padding-top: 25px;
+
+            color: #91a29a;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 900px) {
+
+            .hero {
+
+                grid-template-columns: 1fr;
+
+                padding-top: 60px;
+            }
+
+
+            .hero-visual {
+
+                min-height: 390px;
+            }
+
+
+            .smart-match {
+
+                grid-template-columns: 1fr;
+
+                padding: 45px 35px;
+            }
+
+
+            .smart-visual {
+                display: none;
+            }
+
+
+            .quick-grid,
+            .steps {
+
+                grid-template-columns: 1fr 1fr;
+            }
+
+
+            .ai-section {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .stats {
+
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+
+        @media (max-width: 650px) {
+
+            nav {
+
+                padding: 17px 5%;
+            }
+
+
+            .nav-links a:not(.nav-btn) {
+
+                display: none;
+            }
+
+
+            .hero {
+
+                padding: 50px 5%;
+
+                min-height: auto;
+            }
+
+
+            .hero-content h1 {
+
+                font-size: 48px;
+
+                letter-spacing: -2px;
+            }
+
+
+            .hero-card {
+
+                height: 330px;
+            }
+
+
+            .hero-visual {
+
+                min-height: 350px;
+            }
+
+
+            .stats {
+
+                grid-template-columns: 1fr;
+
+                padding: 0 5% 60px;
+            }
+
+
+            .smart-match {
+
+                margin: 10px 5% 70px;
+
+                padding: 35px 25px;
+
+                border-radius: 22px;
+            }
+
+
+            .smart-match h2 {
+
+                font-size: 32px;
+            }
+
+
+            .section {
+
+                padding: 0 5% 70px;
+            }
+
+
+            .section-heading {
+
+                display: block;
+            }
+
+
+            .section-heading h2 {
+
+                font-size: 32px;
+
+                margin-bottom: 10px;
+            }
+
+
+            .quick-grid,
+            .steps {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .how {
+
+                padding: 70px 5%;
+            }
+
+
+            .ai-section {
+
+                padding: 70px 5%;
+
+                gap: 35px;
+            }
+
+
+            .ai-content h2 {
+
+                font-size: 34px;
+            }
+
+
+            .footer-main {
+
+                display: block;
+            }
+
+
+            .footer-links {
+
+                margin-top: 25px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         NAVBAR
+    ========================================== -->
+
+    <nav>
+
+        <a href="/" class="logo">
+            Haven<span>ly</span>
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="/properties">
+                Explore
+            </a>
+
+            <a href="/properties?type=PG">
+                PGs
+            </a>
+
+            <a href="/properties?type=Apartment">
+                Apartments
+            </a>
+
+            <a href="/recommendations" class="nav-ai">
+                🤖 AI Assistant
+            </a>
+
+            <a href="#how-it-works">
+                How it works
+            </a>
+
+            <a href="/tenant-dashboard" class="nav-btn">
+                Dashboard
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================================
+         HERO
+    ========================================== -->
+
+    <section class="hero">
+
+
+        <div class="hero-content">
+
+            <h1>
+                Find a place
+                <span>that feels</span>
+                like home.
+            </h1>
+
+
+            <p>
+
+                Havenly makes renting simpler.
+                Discover PGs, rooms and apartments,
+                compare options and find a stay
+                that fits your needs.
+
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a
+                    href="/properties"
+                    class="primary-btn"
+                >
+                    Explore Properties →
+                </a>
+
+
+                <a
+                    href="/recommendations"
+                    class="secondary-btn"
+                >
+                    ✨ Smart Match
+                </a>
+
+
+                <a
+                    href="/ai-assistant"
+                    class="secondary-btn ai-hero-btn"
+                >
+                    🤖 Ask Havenly AI
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-visual">
+
+            <div class="hero-card">
+
+                <div class="hero-house">
+
+                    <div class="hero-roof"></div>
+
+                    <div class="hero-window"></div>
+
+                    <div class="hero-window two"></div>
+
+                    <div class="hero-door"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="floating-card one">
+
+                <span class="floating-icon">
+                    🏠
+                </span>
+
+                Verified stays
+
+            </div>
+
+
+            <div class="floating-card two">
+
+                <span class="floating-icon">
+                    ✨
+                </span>
+
+                Smart matching
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         STATS
+    ========================================== -->
+
+    <section class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-number">
+                50+
+            </div>
+
+            <div class="stat-label">
+                Rental options
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-number">
+                3
+            </div>
+
+            <div class="stat-label">
+                Property categories
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-number">
+                24/7
+            </div>
+
+            <div class="stat-label">
+                Easy property discovery
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         SMART MATCH
+    ========================================== -->
+
+    <section class="smart-match">
+
+
+        <div>
+
+            <div class="smart-label">
+                ✨ HAVENLY SMART MATCH
+            </div>
+
+
+            <h2>
+
+                Tell us what you need.
+                We'll find your
+                <span>best matches.</span>
+
+            </h2>
+
+
+            <p>
+
+                Enter your preferred location,
+                monthly budget and property type.
+                Havenly's smart matching algorithm
+                compares available properties and
+                calculates a personalized match score.
+
+            </p>
+
+
+            <a
+                href="/recommendations"
+                class="smart-btn"
+            >
+                Find My Perfect Stay →
+            </a>
+
+        </div>
+
+
+        <div class="smart-visual">
+
+            <div class="ai-orb">
+                ✨
+            </div>
+
+
+            <div class="match-pill one">
+                95% Match
+            </div>
+
+
+            <div class="match-pill two">
+                ✓ Budget Friendly
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         QUICK ACCESS
+    ========================================== -->
+
+    <section class="section">
+
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    Explore your options
+                </h2>
+
+            </div>
+
+
+            <p>
+
+                Whether you're looking for
+                a student PG, private room or
+                apartment, start exploring.
+
+            </p>
+
+        </div>
+
+
+        <div class="quick-grid">
+
+
+            <a
+                href="/properties?type=PG"
+                class="quick-card"
+            >
+
+                <div class="quick-icon">
+                    🏠
+                </div>
+
+                <h3>
+                    PGs
+                </h3>
+
+                <p>
+                    Affordable and convenient
+                    stays for students and
+                    working professionals.
+                </p>
+
+                <span class="quick-link">
+                    Explore PGs →
+                </span>
+
+            </a>
+
+
+            <a
+                href="/properties?type=Room"
+                class="quick-card"
+            >
+
+                <div class="quick-icon">
+                    🛏️
+                </div>
+
+                <h3>
+                    Private Rooms
+                </h3>
+
+                <p>
+                    Find comfortable rooms
+                    that fit your lifestyle
+                    and budget.
+                </p>
+
+                <span class="quick-link">
+                    Explore Rooms →
+                </span>
+
+            </a>
+
+
+            <a
+                href="/properties?type=Apartment"
+                class="quick-card"
+            >
+
+                <div class="quick-icon">
+                    🏢
+                </div>
+
+                <h3>
+                    Apartments
+                </h3>
+
+                <p>
+                    Discover apartments for
+                    individuals, couples and
+                    families.
+                </p>
+
+                <span class="quick-link">
+                    Explore Apartments →
+                </span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         HOW IT WORKS
+    ========================================== -->
+
+    <section
+        class="how"
+        id="how-it-works"
+    >
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    Renting made simple
+                </h2>
+
+            </div>
+
+
+            <p>
+
+                From discovering a property
+                to sending a rental request,
+                everything happens in one place.
+
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <h3>
+                    Discover
+                </h3>
+
+                <p>
+
+                    Browse available PGs,
+                    rooms and apartments
+                    based on your requirements.
+
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <h3>
+                    Compare
+                </h3>
+
+                <p>
+
+                    Check rent, location,
+                    property type and
+                    descriptions before deciding.
+
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <h3>
+                    Request
+                </h3>
+
+                <p>
+
+                    Send a rental request
+                    directly to the property
+                    owner and track its status.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         AI / SMART FEATURE
+    ========================================== -->
+
+    <section class="ai-section">
+
+
+        <div class="ai-box">
+            🤖
+        </div>
+
+
+        <div class="ai-content">
+
+            <h2>
+                Meet your
+                Havenly AI Assistant.
+            </h2>
+
+
+            <p>
+
+                Don't know exactly what property
+                you need? Just describe it naturally.
+                Havenly can understand your request,
+                identify your preferences and search
+                the available rental database.
+
+            </p>
+
+
+            <ul class="feature-list">
+
+                <li>
+                    Natural-language property search
+                </li>
+
+                <li>
+                    Location and budget understanding
+                </li>
+
+                <li>
+                    PG, room and apartment detection
+                </li>
+
+                <li>
+                    Relevant property recommendations
+                </li>
+
+            </ul>
+
+
+            <a
+                href="/ai-assistant"
+                class="ai-assistant-btn"
+            >
+                🤖 Chat with Havenly AI →
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+
+        <div class="footer-main">
+
+
+            <div>
+
+                <div class="footer-logo">
+                    Haven<span>ly</span>
+                </div>
+
+
+                <p>
+
+                    Smart rental and PG discovery
+                    made simple for modern tenants.
+
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="/properties">
+                    Explore
+                </a>
+
+                <a href="/recommendations">
+                    Smart Match
+                </a>
+
+                <a
+                    href="/ai-assistant"
+                    class="footer-ai"
+                >
+                    🤖 AI Assistant
+                </a>
+
+                <a href="/tenant-dashboard">
+                    Dashboard
+                </a>
+
+                <a href="/login">
+                    Login
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 Havenly — Smart Rental &
+            PG Management System
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>

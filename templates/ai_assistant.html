@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Property Assistant | Havenly</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f6f4ef;
+            color: #17231f;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        nav {
+            height: 76px;
+            background: #ffffff;
+            border-bottom: 1px solid #e8e5de;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+        }
+
+        .logo {
+            color: #173c32;
+            font-size: 25px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #53605b;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #173c32;
+        }
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .page {
+            width: 90%;
+            max-width: 1000px;
+            margin: 45px auto 70px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .ai-badge {
+            display: inline-block;
+
+            background: #edf4ef;
+            color: #315b49;
+
+            padding: 7px 12px;
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            margin-bottom: 14px;
+        }
+
+        .page-header h1 {
+            color: #173c32;
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #737b76;
+            font-size: 15px;
+        }
+
+        /* =========================
+           CHAT CARD
+        ========================= */
+
+        .assistant-card {
+            background: #ffffff;
+
+            border: 1px solid #e7e5df;
+
+            border-radius: 22px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 15px 40px rgba(23, 60, 50, 0.07);
+        }
+
+        /* =========================
+           CHAT HEADER
+        ========================= */
+
+        .chat-header {
+            background: #173c32;
+            color: #ffffff;
+
+            padding: 22px 25px;
+
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .ai-icon {
+            width: 45px;
+            height: 45px;
+
+            background: rgba(255, 255, 255, 0.12);
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+        }
+
+        .chat-header h2 {
+            font-size: 17px;
+            margin-bottom: 4px;
+        }
+
+        .chat-header p {
+            font-size: 12px;
+            opacity: 0.75;
+        }
+
+        /* =========================
+           CHAT BODY
+        ========================= */
+
+        .chat-body {
+            min-height: 380px;
+            padding: 25px;
+
+            background: #fbfbf8;
+        }
+
+        .message {
+            max-width: 78%;
+            padding: 14px 16px;
+
+            border-radius: 15px;
+
+            font-size: 14px;
+            line-height: 1.55;
+
+            margin-bottom: 15px;
+        }
+
+        .bot-message {
+            background: #edf4ef;
+            color: #294238;
+
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-message {
+            background: #173c32;
+            color: #ffffff;
+
+            margin-left: auto;
+
+            border-bottom-right-radius: 5px;
+        }
+
+        /* =========================
+           AI RESPONSE
+        ========================= */
+
+        .assistant-response {
+            margin-top: 5px;
+        }
+
+        .response-intro {
+            margin-bottom: 16px;
+        }
+
+        .preference-summary {
+            background: #ffffff;
+
+            border: 1px solid #dce5de;
+
+            border-radius: 12px;
+
+            padding: 12px 14px;
+
+            margin-bottom: 18px;
+
+            font-size: 13px;
+
+            color: #3d5048;
+        }
+
+        .preference-summary strong {
+            color: #173c32;
+        }
+
+        /* =========================
+           PROPERTY RESULT
+        ========================= */
+
+        .property-result {
+            background: #ffffff;
+
+            border: 1px solid #e1e5df;
+
+            border-radius: 14px;
+
+            padding: 15px;
+
+            margin-bottom: 12px;
+
+            transition: 0.2s ease;
+        }
+
+        .property-result:hover {
+            border-color: #cbd9cf;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 5px 18px rgba(23, 60, 50, 0.05);
+        }
+
+        .property-result-title {
+            color: #173c32;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            margin-bottom: 6px;
+        }
+
+        .property-result-info {
+            color: #68746e;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        .property-result-rent {
+            color: #173c32;
+
+            font-weight: 700;
+
+            margin-top: 5px;
+        }
+
+        /* =========================
+           VIEW PROPERTY BUTTON
+        ========================= */
+
+        .view-property-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            margin-top: 12px;
+
+            padding: 9px 13px;
+
+            background: #173c32;
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .view-property-btn:hover {
+            background: #0f2d25;
+
+            transform: translateY(-1px);
+        }
+
+        .smart-match-note {
+            margin-top: 15px;
+
+            color: #637069;
+
+            font-size: 12px;
+        }
+
+        /* =========================
+           SUGGESTIONS
+        ========================= */
+
+        .suggestions {
+            padding: 20px 25px;
+
+            background: #ffffff;
+
+            border-top: 1px solid #eeeeea;
+        }
+
+        .suggestions-title {
+            color: #6f7873;
+            font-size: 12px;
+            font-weight: 700;
+
+            margin-bottom: 12px;
+        }
+
+        .suggestion-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .suggestion {
+            border: 1px solid #dfe2dc;
+
+            background: #fafbf8;
+
+            color: #415049;
+
+            padding: 9px 12px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .suggestion:hover {
+            background: #edf4ef;
+
+            border-color: #cbd9cf;
+
+            color: #173c32;
+        }
+
+        .suggestion:active {
+            transform: scale(0.97);
+        }
+
+        /* =========================
+           INPUT
+        ========================= */
+
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+
+            padding: 20px 25px;
+
+            background: #ffffff;
+
+            border-top: 1px solid #eeeeea;
+        }
+
+        .chat-input {
+            flex: 1;
+
+            border: 1px solid #dcded8;
+
+            background: #fbfbf9;
+
+            border-radius: 12px;
+
+            padding: 14px 16px;
+
+            outline: none;
+
+            font-size: 14px;
+        }
+
+        .chat-input:focus {
+            border-color: #173c32;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 0 0 3px rgba(23, 60, 50, 0.07);
+        }
+
+        .send-btn {
+            border: none;
+
+            background: #173c32;
+            color: #ffffff;
+
+            padding: 0 22px;
+
+            border-radius: 11px;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .send-btn:hover {
+            background: #0f2d25;
+        }
+
+        /* =========================
+           INFO
+        ========================= */
+
+        .info-box {
+            margin-top: 22px;
+
+            background: #ffffff;
+
+            border: 1px solid #e7e5df;
+
+            border-radius: 15px;
+
+            padding: 18px 20px;
+
+            color: #6f7873;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        .info-box strong {
+            color: #173c32;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .page {
+                width: 94%;
+                margin-top: 30px;
+            }
+
+            .page-header h1 {
+                font-size: 30px;
+            }
+
+            .chat-input-area {
+                padding: 15px;
+            }
+
+            .chat-body {
+                padding: 18px;
+            }
+
+            .suggestions {
+                padding: 18px;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .send-btn {
+                padding: 0 16px;
+            }
+
+            .view-property-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <nav>
+
+        <a href="/" class="logo">
+            Havenly.
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/properties">
+                Explore
+            </a>
+
+            <a href="/recommendations">
+                Smart Match
+            </a>
+
+            <a href="/tenant-dashboard">
+                Dashboard
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         PAGE
+    ========================= -->
+
+    <main class="page">
+
+        <div class="page-header">
+
+            <span class="ai-badge">
+                ✨ AI-POWERED
+            </span>
+
+            <h1>
+                Havenly AI Assistant
+            </h1>
+
+            <p>
+                Tell me what kind of place you're looking for.
+                I'll help you find suitable properties.
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             ASSISTANT CARD
+        ========================= -->
+
+        <div class="assistant-card">
+
+
+            <!-- CHAT HEADER -->
+
+            <div class="chat-header">
+
+                <div class="ai-icon">
+                    ✨
+                </div>
+
+                <div>
+
+                    <h2>
+                        Havenly Assistant
+                    </h2>
+
+                    <p>
+                        Property discovery assistant
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 CHAT BODY
+            ========================= -->
+
+            <div class="chat-body">
+
+                <!-- DEFAULT AI MESSAGE -->
+
+                <div class="message bot-message">
+
+                    Hi! 👋 I'm Havenly's property assistant.
+
+                    <br><br>
+
+                    Tell me your preferred location,
+                    budget, and property type.
+
+                    <br><br>
+
+                    For example:
+
+                    <strong>
+                        "Find me a PG in Thane under ₹10,000"
+                    </strong>
+
+                </div>
+
+
+                <!-- USER QUERY -->
+
+                {% if user_query %}
+
+                    <div class="message user-message">
+
+                        {{ user_query }}
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- AI RESPONSE -->
+
+                {% if response %}
+
+                    <div class="message bot-message assistant-response">
+
+                        {{ response|safe }}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- =========================
+                 SUGGESTIONS
+            ========================= -->
+
+            <div class="suggestions">
+
+                <div class="suggestions-title">
+                    Try asking:
+                </div>
+
+                <div class="suggestion-list">
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                        onclick="useSuggestion('Find me a PG in Thane under 10000')"
+                    >
+                        🏠 PG in Thane under ₹10,000
+                    </button>
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                        onclick="useSuggestion('Find an apartment in Mumbai under 25000')"
+                    >
+                        🏙️ Apartment in Mumbai under ₹25,000
+                    </button>
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                        onclick="useSuggestion('Show me rooms in Borivali')"
+                    >
+                        🛏️ Rooms in Borivali
+                    </button>
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                        onclick="useSuggestion('Find a PG near Vashi under 10000')"
+                    >
+                        📍 PG near Vashi under ₹10,000
+                    </button>
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                        onclick="useSuggestion('Show me apartments in Andheri')"
+                    >
+                        ✨ Apartments in Andheri
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 INPUT
+            ========================= -->
+
+            <form
+                action="/ai-assistant"
+                method="GET"
+                class="chat-input-area"
+            >
+
+                <input
+                    type="text"
+                    name="query"
+                    id="query"
+                    class="chat-input"
+                    placeholder="Describe your ideal property..."
+                    value="{{ user_query or '' }}"
+                    autocomplete="off"
+                    required
+                >
+
+                <button
+                    type="submit"
+                    class="send-btn"
+                >
+                    Send →
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- =========================
+             INFORMATION
+        ========================= -->
+
+        <div class="info-box">
+
+            <strong>How Havenly AI works:</strong>
+
+            Havenly analyzes your natural-language request
+            and identifies useful preferences such as
+            location, budget, and property type.
+
+            It then compares those preferences with
+            available properties in the database and
+            presents relevant recommendations.
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+        function useSuggestion(text) {
+
+            const input = document.getElementById("query");
+
+            input.value = text;
+
+            input.focus();
+
+            /*
+             * Small visual feedback so the user knows
+             * the suggestion has been selected.
+             */
+
+            input.style.borderColor = "#173c32";
+
+            setTimeout(function () {
+                input.style.borderColor = "";
+            }, 700);
+
+        }
+
+    </script>
+
+</body>
+</html>

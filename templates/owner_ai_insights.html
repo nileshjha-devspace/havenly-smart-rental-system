@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AI Insights | Havenly</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+
+            background: #f6f4ef;
+
+            color: #17231f;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        nav {
+
+            height: 76px;
+
+            background: #ffffff;
+
+            border-bottom: 1px solid #e8e5de;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 7%;
+        }
+
+
+        .logo {
+
+            font-size: 25px;
+
+            font-weight: 800;
+
+            color: #173c32;
+
+            text-decoration: none;
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 25px;
+        }
+
+
+        .nav-links a {
+
+            text-decoration: none;
+
+            color: #53605b;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .nav-links a:hover {
+
+            color: #173c32;
+        }
+
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .page {
+
+            width: 90%;
+
+            max-width: 1050px;
+
+            margin: 50px auto 70px;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .page-header {
+
+            margin-bottom: 30px;
+        }
+
+
+        .eyebrow {
+
+            display: inline-block;
+
+            background: #e7f0eb;
+
+            color: #315b49;
+
+            padding: 7px 11px;
+
+            border-radius: 8px;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.6px;
+
+            margin-bottom: 13px;
+        }
+
+
+        .page-header h1 {
+
+            color: #173c32;
+
+            font-size: 36px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .page-header p {
+
+            color: #737b76;
+
+            font-size: 15px;
+
+            line-height: 1.6;
+
+            max-width: 700px;
+        }
+
+
+        /* =========================
+           AI CARD
+        ========================= */
+
+        .ai-container {
+
+            background: #ffffff;
+
+            border: 1px solid #e7e5df;
+
+            border-radius: 22px;
+
+            overflow: hidden;
+
+            box-shadow: 0 12px 35px rgba(23, 60, 50, 0.06);
+        }
+
+
+        .ai-top {
+
+            background: linear-gradient(
+                135deg,
+                #173c32,
+                #245548
+            );
+
+            padding: 30px;
+
+            color: #ffffff;
+        }
+
+
+        .ai-top-icon {
+
+            font-size: 32px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .ai-top h2 {
+
+            font-size: 22px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .ai-top p {
+
+            color: #d9e5df;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           CHAT AREA
+        ========================= */
+
+        .chat-area {
+
+            padding: 30px;
+        }
+
+
+        .question-label {
+
+            display: block;
+
+            color: #173c32;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 9px;
+        }
+
+
+        .question-form {
+
+            display: flex;
+
+            gap: 10px;
+        }
+
+
+        .question-input {
+
+            flex: 1;
+
+            border: 1px solid #dcded8;
+
+            border-radius: 11px;
+
+            padding: 14px 15px;
+
+            font-size: 14px;
+
+            outline: none;
+
+            color: #17231f;
+
+            background: #fbfbf8;
+        }
+
+
+        .question-input:focus {
+
+            border-color: #173c32;
+
+            background: #ffffff;
+        }
+
+
+        .ask-btn {
+
+            border: none;
+
+            border-radius: 11px;
+
+            padding: 0 20px;
+
+            background: #173c32;
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        .ask-btn:hover {
+
+            background: #0f2d25;
+        }
+
+
+        /* =========================
+           QUICK QUESTIONS
+        ========================= */
+
+        .quick-title {
+
+            color: #7b837e;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            margin-top: 25px;
+
+            margin-bottom: 11px;
+        }
+
+
+        .quick-questions {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 9px;
+        }
+
+
+        .quick-question {
+
+            border: 1px solid #dfe3dd;
+
+            background: #f8f9f6;
+
+            color: #315346;
+
+            padding: 9px 12px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+
+        .quick-question:hover {
+
+            background: #edf3ef;
+
+            border-color: #cbd8d0;
+        }
+
+
+        /* =========================
+           RESPONSE
+        ========================= */
+
+        .response-box {
+
+            margin-top: 25px;
+
+            padding: 22px;
+
+            background: #f7f8f5;
+
+            border: 1px solid #e3e6df;
+
+            border-radius: 15px;
+        }
+
+
+        .response-heading {
+
+            color: #173c32;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            margin-bottom: 13px;
+        }
+
+
+        .response-content {
+
+            color: #53605b;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           INSIGHT CARDS
+        ========================= */
+
+        .insight-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-top: 30px;
+        }
+
+
+        .insight-card {
+
+            background: #ffffff;
+
+            border: 1px solid #e7e5df;
+
+            border-radius: 16px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(23, 60, 50, 0.04);
+        }
+
+
+        .insight-icon {
+
+            font-size: 25px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .insight-card h3 {
+
+            color: #173c32;
+
+            font-size: 16px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .insight-card p {
+
+            color: #7b837e;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           FOOTER NOTE
+        ========================= */
+
+        .info-box {
+
+            margin-top: 28px;
+
+            background: #eef5f1;
+
+            border: 1px solid #d4e4dc;
+
+            border-radius: 14px;
+
+            padding: 17px 18px;
+
+            color: #456157;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 750px) {
+
+            .question-form {
+
+                flex-direction: column;
+            }
+
+
+            .ask-btn {
+
+                padding: 13px;
+            }
+
+
+            .insight-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .page-header h1 {
+
+                font-size: 30px;
+            }
+        }
+
+
+        @media (max-width: 550px) {
+
+            nav {
+
+                padding: 0 5%;
+            }
+
+
+            .nav-links {
+
+                gap: 12px;
+            }
+
+
+            .nav-links a {
+
+                font-size: 12px;
+            }
+
+
+            .chat-area {
+
+                padding: 22px;
+            }
+
+
+            .ai-top {
+
+                padding: 24px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <nav>
+
+        <a
+            href="/owner-dashboard"
+            class="logo"
+        >
+            Havenly.
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="/owner-dashboard">
+                Dashboard
+            </a>
+
+            <a href="/owner-requests">
+                Requests
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================
+         PAGE
+    ========================= -->
+
+    <main class="page">
+
+
+        <!-- HEADER -->
+
+        <div class="page-header">
+
+            <span class="eyebrow">
+                Havenly AI
+            </span>
+
+
+            <h1>
+                Owner AI Insights
+            </h1>
+
+
+            <p>
+                Ask Havenly AI about your properties,
+                rental requests, availability and
+                property performance.
+            </p>
+
+        </div>
+
+
+
+        <!-- =========================
+             AI CONTAINER
+        ========================= -->
+
+        <section class="ai-container">
+
+
+            <div class="ai-top">
+
+                <div class="ai-top-icon">
+                    🤖
+                </div>
+
+
+                <h2>
+                    Your Property Assistant
+                </h2>
+
+
+                <p>
+                    Get quick answers from your Havenly
+                    property and rental data.
+                </p>
+
+            </div>
+
+
+
+            <div class="chat-area">
+
+
+                <label
+                    class="question-label"
+                    for="question"
+                >
+                    What would you like to know?
+                </label>
+
+
+                <form
+                    action="/owner-ai-insights"
+                    method="GET"
+                    class="question-form"
+                >
+
+                    <input
+                        type="text"
+                        id="question"
+                        name="question"
+                        class="question-input"
+                        placeholder="e.g. How many pending requests do I have?"
+                        value="{{ question or '' }}"
+                        autocomplete="off"
+                    >
+
+
+                    <button
+                        type="submit"
+                        class="ask-btn"
+                    >
+                        Ask AI →
+                    </button>
+
+                </form>
+
+
+
+                <!-- QUICK QUESTIONS -->
+
+                <div class="quick-title">
+                    Try asking
+                </div>
+
+
+                <div class="quick-questions">
+
+                    <button
+                        type="button"
+                        class="quick-question"
+                        onclick="setQuestion('How many properties do I have?')"
+                    >
+                        How many properties do I have?
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="quick-question"
+                        onclick="setQuestion('How many pending requests do I have?')"
+                    >
+                        Pending requests?
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="quick-question"
+                        onclick="setQuestion('Which of my properties are available?')"
+                    >
+                        Available properties?
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="quick-question"
+                        onclick="setQuestion('Which property has the most requests?')"
+                    >
+                        Most requested property?
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="quick-question"
+                        onclick="setQuestion('Show me my rental requests')"
+                    >
+                        Show rental requests
+                    </button>
+
+                </div>
+
+
+
+                <!-- RESPONSE -->
+
+                {% if response %}
+
+                    <div class="response-box">
+
+                        <div class="response-heading">
+                            🤖 Havenly AI Response
+                        </div>
+
+
+                        <div class="response-content">
+
+                            {{ response|safe }}
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             INSIGHT TYPES
+        ========================= -->
+
+        <section class="insight-grid">
+
+
+            <div class="insight-card">
+
+                <div class="insight-icon">
+                    🏠
+                </div>
+
+
+                <h3>
+                    Property Overview
+                </h3>
+
+
+                <p>
+                    Ask about your total properties,
+                    active listings and availability.
+                </p>
+
+            </div>
+
+
+
+            <div class="insight-card">
+
+                <div class="insight-icon">
+                    📩
+                </div>
+
+
+                <h3>
+                    Rental Requests
+                </h3>
+
+
+                <p>
+                    Get information about pending,
+                    approved and rejected requests.
+                </p>
+
+            </div>
+
+
+
+            <div class="insight-card">
+
+                <div class="insight-icon">
+                    📊
+                </div>
+
+
+                <h3>
+                    Property Performance
+                </h3>
+
+
+                <p>
+                    Understand which of your properties
+                    are receiving the most interest.
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =========================
+             INFO
+        ========================= -->
+
+        <div class="info-box">
+
+            💡
+            Havenly AI uses your owner-specific
+            property and rental request data to
+            generate these insights. You can ask
+            questions in natural language instead of
+            manually checking multiple sections.
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+        function setQuestion(question) {
+
+            const input =
+                document.getElementById("question");
+
+            input.value = question;
+
+            input.focus();
+
+        }
+
+    </script>
+
+
+</body>
+</html>

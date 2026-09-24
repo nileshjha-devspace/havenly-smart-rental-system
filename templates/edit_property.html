@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Property | Havenly</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f6f4ef;
+            color: #17231f;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        nav {
+            height: 76px;
+            background: #ffffff;
+            border-bottom: 1px solid #e8e5de;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #173c32;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-right a {
+            text-decoration: none;
+            color: #46524e;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-right a:hover {
+            color: #173c32;
+        }
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .page {
+            width: 90%;
+            max-width: 1100px;
+            margin: 45px auto 70px;
+        }
+
+        .page-header {
+            margin-bottom: 28px;
+        }
+
+        .back-link {
+            display: inline-block;
+            text-decoration: none;
+            color: #6c756f;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .back-link:hover {
+            color: #173c32;
+        }
+
+        .page-header h1 {
+            font-size: 36px;
+            line-height: 1.1;
+            color: #173c32;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #727b76;
+            font-size: 15px;
+        }
+
+        /* =========================
+           CARD
+        ========================= */
+
+        .form-card {
+            background: #ffffff;
+            border: 1px solid #e8e5de;
+            border-radius: 22px;
+            padding: 35px;
+            box-shadow: 0 12px 35px rgba(23, 60, 50, 0.06);
+        }
+
+        /* =========================
+           ALERT
+        ========================= */
+
+        .error-message {
+            background: #fff0ee;
+            border: 1px solid #f2c6c0;
+            color: #a33b31;
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #26352f;
+            margin-bottom: 9px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #dcded8;
+            border-radius: 11px;
+            background: #fbfbf9;
+            color: #17231f;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #173c32;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(23, 60, 50, 0.08);
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           PROPERTY TYPE
+        ========================= */
+
+        .type-options {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .type-option {
+            position: relative;
+        }
+
+        .type-option input {
+            display: none;
+        }
+
+        .type-option label {
+            display: block;
+            padding: 12px 20px;
+            border: 1px solid #dcded8;
+            border-radius: 10px;
+            background: #fbfbf9;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0;
+            transition: 0.2s ease;
+        }
+
+        .type-option input:checked + label {
+            background: #173c32;
+            border-color: #173c32;
+            color: #ffffff;
+        }
+
+        /* =========================
+           AVAILABILITY
+        ========================= */
+
+        .availability-box {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 15px 17px;
+            background: #f8f8f5;
+            border: 1px solid #e3e3dc;
+            border-radius: 12px;
+        }
+
+        .availability-box input {
+            width: 18px;
+            height: 18px;
+            accent-color: #173c32;
+            cursor: pointer;
+        }
+
+        .availability-box span {
+            font-size: 14px;
+            color: #45514c;
+            font-weight: 600;
+        }
+
+        /* =========================
+           IMAGE SECTION
+        ========================= */
+
+        .section-title {
+            grid-column: 1 / -1;
+            padding-top: 8px;
+            border-top: 1px solid #eeeeea;
+            margin-top: 4px;
+            padding-bottom: 2px;
+        }
+
+        .section-title h2 {
+            font-size: 20px;
+            color: #173c32;
+            margin-bottom: 5px;
+        }
+
+        .section-title p {
+            font-size: 13px;
+            color: #7a817d;
+        }
+
+        .current-images {
+            grid-column: 1 / -1;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-top: 12px;
+        }
+
+        .image-card {
+            position: relative;
+            height: 145px;
+            border-radius: 13px;
+            overflow: hidden;
+            background: #f1f1ed;
+            border: 1px solid #e2e2dc;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-label {
+            position: absolute;
+            left: 8px;
+            bottom: 8px;
+            background: rgba(23, 60, 50, 0.88);
+            color: #ffffff;
+            padding: 5px 9px;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .no-images {
+            margin-top: 12px;
+            padding: 20px;
+            border: 1px dashed #d7d8d1;
+            border-radius: 12px;
+            background: #fafaf7;
+            color: #7a817d;
+            font-size: 13px;
+        }
+
+        /* =========================
+           UPLOAD
+        ========================= */
+
+        .upload-box {
+            grid-column: 1 / -1;
+            border: 2px dashed #cfd5cf;
+            border-radius: 15px;
+            padding: 25px;
+            background: #fafbf8;
+            text-align: center;
+            transition: 0.2s ease;
+        }
+
+        .upload-box:hover {
+            border-color: #173c32;
+            background: #f7faf7;
+        }
+
+        .upload-icon {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .upload-box h3 {
+            color: #26352f;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .upload-box p {
+            color: #7a817d;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .file-input {
+            width: 100%;
+            max-width: 430px;
+            padding: 10px;
+            border: 1px solid #dcded8;
+            border-radius: 10px;
+            background: #ffffff;
+            cursor: pointer;
+        }
+
+        .file-note {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #8a918d;
+        }
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .form-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 8px;
+            padding-top: 25px;
+            border-top: 1px solid #eeeeea;
+        }
+
+        .cancel-btn,
+        .save-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 13px 22px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+        }
+
+        .cancel-btn {
+            background: #f0f1ed;
+            color: #46524e;
+        }
+
+        .cancel-btn:hover {
+            background: #e5e7e2;
+        }
+
+        .save-btn {
+            background: #173c32;
+            color: #ffffff;
+        }
+
+        .save-btn:hover {
+            background: #0f2d25;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full,
+            .section-title,
+            .current-images,
+            .upload-box,
+            .form-actions {
+                grid-column: 1;
+            }
+
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .page-header h1 {
+                font-size: 30px;
+            }
+
+            .form-card {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 520px) {
+
+            nav {
+                padding: 0 5%;
+            }
+
+            .nav-right {
+                gap: 12px;
+            }
+
+            .nav-right a {
+                font-size: 12px;
+            }
+
+            .page {
+                width: 94%;
+                margin-top: 30px;
+            }
+
+            .form-card {
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            .image-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .image-card {
+                height: 115px;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .cancel-btn,
+            .save-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <nav>
+
+        <a href="/" class="logo">
+            Havenly.
+        </a>
+
+        <div class="nav-right">
+
+            <a href="/owner-dashboard">
+                Dashboard
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         PAGE
+    ========================= -->
+
+    <main class="page">
+
+        <div class="page-header">
+
+            <a
+                href="/owner-dashboard"
+                class="back-link"
+            >
+                ← Back to Dashboard
+            </a>
+
+            <h1>
+                Edit Property
+            </h1>
+
+            <p>
+                Update your property details and add new photos.
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             FORM
+        ========================= -->
+
+        <div class="form-card">
+
+            {% if error %}
+
+            <div class="error-message">
+                {{ error }}
+            </div>
+
+            {% endif %}
+
+
+            <form
+                action="/edit-property/{{ property['id'] }}"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <div class="form-grid">
+
+
+                    <!-- PROPERTY TITLE -->
+
+                    <div class="form-group full">
+
+                        <label for="title">
+                            Property Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            value="{{ property['title'] }}"
+                            placeholder="e.g. Modern 1BHK Apartment"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- LOCATION -->
+
+                    <div class="form-group">
+
+                        <label for="location">
+                            Location
+                        </label>
+
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            value="{{ property['location'] }}"
+                            placeholder="e.g. Andheri, Mumbai"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- RENT -->
+
+                    <div class="form-group">
+
+                        <label for="rent">
+                            Monthly Rent (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="rent"
+                            name="rent"
+                            value="{{ property['rent'] }}"
+                            placeholder="Enter monthly rent"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PROPERTY TYPE -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            Property Type
+                        </label>
+
+                        <div class="type-options">
+
+                            <div class="type-option">
+
+                                <input
+                                    type="radio"
+                                    id="type-pg"
+                                    name="property_type"
+                                    value="PG"
+                                    {% if property['property_type'] == 'PG' %}checked{% endif %}
+                                >
+
+                                <label for="type-pg">
+                                    PG
+                                </label>
+
+                            </div>
+
+
+                            <div class="type-option">
+
+                                <input
+                                    type="radio"
+                                    id="type-apartment"
+                                    name="property_type"
+                                    value="Apartment"
+                                    {% if property['property_type'] == 'Apartment' %}checked{% endif %}
+                                >
+
+                                <label for="type-apartment">
+                                    Apartment
+                                </label>
+
+                            </div>
+
+
+                            <div class="type-option">
+
+                                <input
+                                    type="radio"
+                                    id="type-room"
+                                    name="property_type"
+                                    value="Room"
+                                    {% if property['property_type'] == 'Room' %}checked{% endif %}
+                                >
+
+                                <label for="type-room">
+                                    Room
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="form-group full">
+
+                        <label for="description">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="description"
+                            name="description"
+                            placeholder="Describe the property..."
+                        >{{ property['description'] or '' }}</textarea>
+
+                    </div>
+
+
+                    <!-- AVAILABILITY -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            Availability
+                        </label>
+
+                        <div class="availability-box">
+
+                            <input
+                                type="checkbox"
+                                id="available"
+                                name="available"
+                                value="1"
+                                {% if property['available'] == 1 %}checked{% endif %}
+                            >
+
+                            <span>
+                                Property is currently available for rent
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =========================
+                         CURRENT IMAGES
+                    ========================= -->
+
+                    <div class="section-title">
+
+                        <h2>
+                            Current Photos
+                        </h2>
+
+                        <p>
+                            These photos are already uploaded for this property.
+                        </p>
+
+                    </div>
+
+
+                    <div class="current-images">
+
+                        {% if property_images %}
+
+                            <div class="image-grid">
+
+                                {% for image in property_images %}
+
+                                    <div class="image-card">
+
+                                        <img
+                                            src="{{ image['image_url'] }}"
+                                            alt="Property Image"
+                                        >
+
+                                        {% if loop.first %}
+
+                                            <div class="image-label">
+                                                Main Photo
+                                            </div>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% else %}
+
+                            {% if property['image_url'] %}
+
+                                <div class="image-grid">
+
+                                    <div class="image-card">
+
+                                        <img
+                                            src="{{ property['image_url'] }}"
+                                            alt="Property Image"
+                                        >
+
+                                        <div class="image-label">
+                                            Main Photo
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            {% else %}
+
+                                <div class="no-images">
+
+                                    No photos have been uploaded for this property yet.
+
+                                </div>
+
+                            {% endif %}
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- =========================
+                         ADD NEW IMAGES
+                    ========================= -->
+
+                    <div class="section-title">
+
+                        <h2>
+                            Add New Photos
+                        </h2>
+
+                        <p>
+                            Upload additional photos. Existing photos will remain unchanged.
+                        </p>
+
+                    </div>
+
+
+                    <div class="upload-box">
+
+                        <div class="upload-icon">
+                            📸
+                        </div>
+
+                        <h3>
+                            Upload Property Photos
+                        </h3>
+
+                        <p>
+                            Select one or multiple images from your computer.
+                        </p>
+
+                        <input
+                            type="file"
+                            name="property_images"
+                            id="property_images"
+                            class="file-input"
+                            accept="image/png,image/jpeg,image/jpg,image/webp"
+                            multiple
+                        >
+
+                        <div class="file-note">
+                            Supported formats: JPG, JPEG, PNG, WEBP
+                        </div>
+
+                    </div>
+
+
+                    <!-- =========================
+                         ACTIONS
+                    ========================= -->
+
+                    <div class="form-actions">
+
+                        <a
+                            href="/owner-dashboard"
+                            class="cancel-btn"
+                        >
+                            Cancel
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="save-btn"
+                        >
+                            Save Changes
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

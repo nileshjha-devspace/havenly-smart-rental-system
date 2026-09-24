@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Rental Requests | Havenly</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f6f2;
+            color: #17251f;
+        }
+
+
+        /* ==========================================
+           NAVBAR
+        ========================================== */
+
+        .navbar {
+            height: 72px;
+
+            background: white;
+
+            border-bottom: 1px solid #e6e8e6;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+
+        .logo {
+            font-size: 27px;
+
+            font-weight: 800;
+
+            letter-spacing: -1px;
+
+            color: #17251f;
+
+            text-decoration: none;
+        }
+
+
+        .logo span {
+            color: #e8755c;
+        }
+
+
+        .nav-right {
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+        }
+
+
+        .back-link {
+            color: #68756e;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .back-link:hover {
+            color: #17251f;
+        }
+
+
+        .logout-btn {
+            text-decoration: none;
+
+            color: white;
+
+            background: #17251f;
+
+            padding: 10px 17px;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        /* ==========================================
+           MAIN
+        ========================================== */
+
+        .main {
+            width: 90%;
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 45px 0 70px;
+        }
+
+
+        /* ==========================================
+           HEADER
+        ========================================== */
+
+        .page-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-end;
+
+            margin-bottom: 30px;
+        }
+
+
+        .page-label {
+            color: #e8755c;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.2px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .page-header h1 {
+            font-size: 36px;
+
+            letter-spacing: -1px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .page-header p {
+            color: #758078;
+
+            font-size: 15px;
+        }
+
+
+        .dashboard-btn {
+            background: #17251f;
+
+            color: white;
+
+            padding: 12px 18px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .dashboard-btn:hover {
+            background: #263b31;
+        }
+
+
+        /* ==========================================
+           SUMMARY CARDS
+        ========================================== */
+
+        .summary {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 16px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .summary-card {
+            background: white;
+
+            border: 1px solid #e5e8e5;
+
+            border-radius: 15px;
+
+            padding: 20px;
+        }
+
+
+        .summary-label {
+            color: #7b867f;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            margin-bottom: 9px;
+        }
+
+
+        .summary-value {
+            font-size: 27px;
+
+            font-weight: 800;
+        }
+
+
+        /* ==========================================
+           REQUEST CARD
+        ========================================== */
+
+        .requests-container {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 16px;
+        }
+
+
+        .request-card {
+            background: white;
+
+            border: 1px solid #e5e8e5;
+
+            border-radius: 18px;
+
+            padding: 22px;
+
+            display: grid;
+
+            grid-template-columns: 1.5fr 1fr auto;
+
+            align-items: center;
+
+            gap: 25px;
+
+            transition: 0.2s;
+        }
+
+
+        .request-card:hover {
+            box-shadow: 0 10px 25px rgba(23, 37, 31, 0.06);
+        }
+
+
+        /* ==========================================
+           TENANT INFO
+        ========================================== */
+
+        .tenant-section {
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+        }
+
+
+        .tenant-avatar {
+            width: 50px;
+
+            height: 50px;
+
+            flex-shrink: 0;
+
+            border-radius: 14px;
+
+            background: #edf1ed;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 19px;
+
+            font-weight: 800;
+
+            color: #526159;
+        }
+
+
+        .tenant-info h3 {
+            font-size: 15px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .tenant-email {
+            color: #7d8881;
+
+            font-size: 12px;
+        }
+
+
+        .request-date {
+            color: #9aa29d;
+
+            font-size: 11px;
+
+            margin-top: 5px;
+        }
+
+
+        /* ==========================================
+           PROPERTY INFO
+        ========================================== */
+
+        .property-section {
+            border-left: 1px solid #edf0ed;
+
+            padding-left: 22px;
+        }
+
+
+        .property-label {
+            color: #e8755c;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .property-section h3 {
+            font-size: 14px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .property-location {
+            color: #7d8881;
+
+            font-size: 12px;
+        }
+
+
+        .property-rent {
+            color: #17251f;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            margin-top: 5px;
+        }
+
+
+        /* ==========================================
+           STATUS + ACTIONS
+        ========================================== */
+
+        .request-actions {
+            text-align: right;
+        }
+
+
+        .status {
+            display: inline-block;
+
+            padding: 6px 10px;
+
+            border-radius: 7px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            margin-bottom: 12px;
+        }
+
+
+        .status-pending {
+            background: #fff5df;
+
+            color: #9a6b1c;
+        }
+
+
+        .status-approved {
+            background: #eaf6ed;
+
+            color: #3d7b4c;
+        }
+
+
+        .status-rejected {
+            background: #f9ece9;
+
+            color: #a95545;
+        }
+
+
+        .action-buttons {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 8px;
+        }
+
+
+        .approve-btn,
+        .reject-btn {
+            border: none;
+
+            padding: 9px 13px;
+
+            border-radius: 8px;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+
+        .approve-btn {
+            background: #17251f;
+
+            color: white;
+        }
+
+
+        .approve-btn:hover {
+            background: #263b31;
+        }
+
+
+        .reject-btn {
+            background: #f7e9e6;
+
+            color: #a95545;
+        }
+
+
+        .reject-btn:hover {
+            background: #f1dcd7;
+        }
+
+
+        /* ==========================================
+           EMPTY STATE
+        ========================================== */
+
+        .empty-state {
+            background: white;
+
+            border: 1px solid #e5e8e5;
+
+            border-radius: 18px;
+
+            padding: 70px 30px;
+
+            text-align: center;
+        }
+
+
+        .empty-icon {
+            width: 65px;
+
+            height: 65px;
+
+            margin: 0 auto 18px;
+
+            border-radius: 18px;
+
+            background: #f0f2f0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 27px;
+        }
+
+
+        .empty-state h2 {
+            font-size: 20px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .empty-state p {
+            color: #7c8781;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            max-width: 400px;
+
+            margin: auto;
+        }
+
+
+        /* ==========================================
+           MOBILE
+        ========================================== */
+
+        @media (max-width: 850px) {
+
+            .page-header {
+                display: block;
+            }
+
+
+            .dashboard-btn {
+                display: inline-block;
+
+                margin-top: 20px;
+            }
+
+
+            .request-card {
+                grid-template-columns: 1fr;
+
+                gap: 18px;
+            }
+
+
+            .property-section {
+                border-left: none;
+
+                border-top: 1px solid #edf0ed;
+
+                padding-left: 0;
+
+                padding-top: 18px;
+            }
+
+
+            .request-actions {
+                text-align: left;
+            }
+
+
+            .action-buttons {
+                justify-content: flex-start;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+
+            .back-link {
+                display: none;
+            }
+
+
+            .main {
+                width: 92%;
+
+                padding-top: 30px;
+            }
+
+
+            .page-header h1 {
+                font-size: 30px;
+            }
+
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     NAVBAR
+========================================== -->
+
+<nav class="navbar">
+
+    <a href="/" class="logo">
+        haven<span>ly</span>
+    </a>
+
+
+    <div class="nav-right">
+
+        <a
+            href="/owner-dashboard"
+            class="back-link"
+        >
+            ← Owner Dashboard
+        </a>
+
+
+        <a
+            href="/logout"
+            class="logout-btn"
+        >
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ==========================================
+     MAIN
+========================================== -->
+
+<main class="main">
+
+
+    <!-- HEADER -->
+
+    <section class="page-header">
+
+        <div>
+
+            <div class="page-label">
+                Tenant Management
+            </div>
+
+
+            <h1>
+                Rental Requests
+            </h1>
+
+
+            <p>
+                Review and manage requests from tenants interested
+                in your properties.
+            </p>
+
+        </div>
+
+
+        <a
+            href="/owner-dashboard"
+            class="dashboard-btn"
+        >
+            ← Dashboard
+        </a>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         SUMMARY
+    ========================================== -->
+
+    <section class="summary">
+
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Total Requests
+            </div>
+
+
+            <div class="summary-value">
+                {{ total_requests }}
+            </div>
+
+        </div>
+
+
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Pending
+            </div>
+
+
+            <div class="summary-value">
+                {{ pending_requests }}
+            </div>
+
+        </div>
+
+
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Approved
+            </div>
+
+
+            <div class="summary-value">
+                {{ approved_requests }}
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ==========================================
+         REQUESTS
+    ========================================== -->
+
+    {% if rental_requests %}
+
+
+    <div class="requests-container">
+
+
+        {% for rental_request in rental_requests %}
+
+
+        <div class="request-card">
+
+
+            <!-- TENANT -->
+
+            <div class="tenant-section">
+
+
+                <div class="tenant-avatar">
+
+                    {{ rental_request["tenant_name"][0]|upper }}
+
+                </div>
+
+
+                <div class="tenant-info">
+
+                    <h3>
+                        {{ rental_request["tenant_name"] }}
+                    </h3>
+
+
+                    <div class="tenant-email">
+
+                        {{ rental_request["tenant_email"] }}
+
+                    </div>
+
+
+                    <div class="request-date">
+
+                        Requested:
+                        {{ rental_request["request_date"] }}
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- PROPERTY -->
+
+            <div class="property-section">
+
+
+                <div class="property-label">
+                    Property
+                </div>
+
+
+                <h3>
+                    {{ rental_request["property_title"] }}
+                </h3>
+
+
+                <div class="property-location">
+
+                    📍 {{ rental_request["location"] }}
+
+                </div>
+
+
+                <div class="property-rent">
+
+                    ₹{{ "{:,}".format(rental_request["rent"]) }}
+                    / month
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ACTIONS -->
+
+            <div class="request-actions">
+
+
+                {% if rental_request["status"] == "Pending" %}
+
+                <div class="status status-pending">
+                    PENDING
+                </div>
+
+
+                <div class="action-buttons">
+
+
+                    <form
+                        action="/owner-request/{{ rental_request['id'] }}/approve"
+                        method="POST"
+                    >
+
+                        <button
+                            type="submit"
+                            class="approve-btn"
+                        >
+                            Approve
+                        </button>
+
+                    </form>
+
+
+                    <form
+                        action="/owner-request/{{ rental_request['id'] }}/reject"
+                        method="POST"
+                    >
+
+                        <button
+                            type="submit"
+                            class="reject-btn"
+                        >
+                            Reject
+                        </button>
+
+                    </form>
+
+
+                </div>
+
+
+                {% elif rental_request["status"] == "Approved" %}
+
+                <div class="status status-approved">
+                    APPROVED
+                </div>
+
+
+                {% else %}
+
+                <div class="status status-rejected">
+                    REJECTED
+                </div>
+
+                {% endif %}
+
+
+            </div>
+
+
+        </div>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+    {% else %}
+
+
+    <!-- EMPTY -->
+
+    <div class="empty-state">
+
+
+        <div class="empty-icon">
+            📩
+        </div>
+
+
+        <h2>
+            No rental requests yet
+        </h2>
+
+
+        <p>
+            When tenants request to rent one of your properties,
+            their requests will appear here for you to review.
+        </p>
+
+
+    </div>
+
+
+    {% endif %}
+
+
+</main>
+
+
+</body>
+
+</html>
