@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Platform Safety | Havenly</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Inter, Arial, sans-serif;
+        }
+
+        body {
+            background: #f7f8fc;
+            color: #172033;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 72px;
+            background: #ffffff;
+            border-bottom: 1px solid #e8eaf0;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #171b2d;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #6c63ff;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .admin-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #73798c;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #f0efff;
+            color: #5c54e8;
+
+            padding: 10px 16px;
+            border-radius: 10px;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* ================= MAIN ================= */
+
+        .container {
+            width: 88%;
+            max-width: 1250px;
+            margin: 45px auto;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            letter-spacing: -0.8px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #747b8f;
+            font-size: 15px;
+        }
+
+        /* ================= SAFETY OVERVIEW ================= */
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .overview-card {
+            background: #ffffff;
+            border: 1px solid #e8eaf0;
+            border-radius: 18px;
+
+            padding: 22px;
+
+            box-shadow: 0 5px 20px rgba(20, 25, 45, 0.04);
+        }
+
+        .overview-icon {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 12px;
+            background: #f0efff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 21px;
+
+            margin-bottom: 16px;
+        }
+
+        .overview-card h3 {
+            font-size: 14px;
+            color: #747b8f;
+            margin-bottom: 6px;
+        }
+
+        .overview-number {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        /* ================= SECTION ================= */
+
+        .section {
+            background: #ffffff;
+
+            border: 1px solid #e8eaf0;
+            border-radius: 18px;
+
+            margin-bottom: 25px;
+
+            overflow: hidden;
+
+            box-shadow: 0 5px 20px rgba(20, 25, 45, 0.04);
+        }
+
+        .section-header {
+            padding: 22px 25px;
+
+            border-bottom: 1px solid #eceef3;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-header h2 {
+            font-size: 18px;
+        }
+
+        .section-header span {
+            font-size: 12px;
+            color: #7b8193;
+        }
+
+        /* ================= OWNER LIST ================= */
+
+        .owner-list {
+            padding: 5px 25px;
+        }
+
+        .owner-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 18px 0;
+
+            border-bottom: 1px solid #f0f1f5;
+        }
+
+        .owner-item:last-child {
+            border-bottom: none;
+        }
+
+        .owner-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .owner-avatar {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 12px;
+
+            background: #efeeff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+        }
+
+        .owner-name {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .owner-email {
+            font-size: 12px;
+            color: #808699;
+        }
+
+        /* ================= BADGES ================= */
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 6px 11px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .pending {
+            background: #fff7df;
+            color: #a97800;
+        }
+
+        .approved {
+            background: #eaf8f0;
+            color: #218653;
+        }
+
+        .rejected {
+            background: #fff0f0;
+            color: #d34d4d;
+        }
+
+        /* ================= EMPTY ================= */
+
+        .empty-state {
+            text-align: center;
+            padding: 45px 20px;
+        }
+
+        .empty-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .empty-state p {
+            color: #858b9d;
+            font-size: 13px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 850px) {
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                padding: 0 5%;
+            }
+
+            .admin-label {
+                display: none;
+            }
+
+            .container {
+                width: 92%;
+                margin: 30px auto;
+            }
+
+            .page-header h1 {
+                font-size: 26px;
+            }
+
+            .owner-item {
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .owner-item .badge {
+                flex-shrink: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <a href="{{ url_for('admin_dashboard') }}" class="logo">
+        Haven<span>ly</span>
+    </a>
+
+    <div class="nav-right">
+
+        <span class="admin-label">
+            Administrator
+        </span>
+
+        <a href="{{ url_for('admin_dashboard') }}" class="back-btn">
+            ← Dashboard
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="container">
+
+    <div class="page-header">
+
+        <h1>🛡️ Platform Safety</h1>
+
+        <p>
+            Monitor owner approvals and account status across the Havenly platform.
+        </p>
+
+    </div>
+
+
+    <!-- ================= OVERVIEW ================= -->
+
+    <div class="overview-grid">
+
+        <div class="overview-card">
+
+            <div class="overview-icon">
+                ⏳
+            </div>
+
+            <h3>Pending Owners</h3>
+
+            <div class="overview-number">
+                {{ pending_owner_list|length }}
+            </div>
+
+        </div>
+
+
+        <div class="overview-card">
+
+            <div class="overview-icon">
+                ✓
+            </div>
+
+            <h3>Approved Owners</h3>
+
+            <div class="overview-number">
+                {{ approved_owners|length }}
+            </div>
+
+        </div>
+
+
+        <div class="overview-card">
+
+            <div class="overview-icon">
+                ⚠
+            </div>
+
+            <h3>Rejected Owners</h3>
+
+            <div class="overview-number">
+                {{ rejected_owners|length }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= PENDING OWNERS ================= -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h2>Pending Owner Accounts</h2>
+
+            <span>
+                Awaiting review
+            </span>
+
+        </div>
+
+
+        {% if pending_owner_list %}
+
+        <div class="owner-list">
+
+            {% for owner in pending_owner_list %}
+
+            <div class="owner-item">
+
+                <div class="owner-info">
+
+                    <div class="owner-avatar">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <div class="owner-name">
+                            {{ owner['name'] }}
+                        </div>
+
+                        <div class="owner-email">
+                            {{ owner['email'] }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <span class="badge pending">
+                    Pending
+                </span>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                ✓
+            </div>
+
+            <h3>No pending owners</h3>
+
+            <p>
+                There are currently no owner accounts waiting for approval.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ================= APPROVED OWNERS ================= -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h2>Approved Owners</h2>
+
+            <span>
+                Active owner accounts
+            </span>
+
+        </div>
+
+
+        {% if approved_owners %}
+
+        <div class="owner-list">
+
+            {% for owner in approved_owners %}
+
+            <div class="owner-item">
+
+                <div class="owner-info">
+
+                    <div class="owner-avatar">
+                        🏠
+                    </div>
+
+                    <div>
+
+                        <div class="owner-name">
+                            {{ owner['name'] }}
+                        </div>
+
+                        <div class="owner-email">
+                            {{ owner['email'] }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <span class="badge approved">
+                    Approved
+                </span>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                🏠
+            </div>
+
+            <h3>No approved owners</h3>
+
+            <p>
+                No owner accounts have been approved yet.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ================= REJECTED OWNERS ================= -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h2>Rejected Owners</h2>
+
+            <span>
+                Accounts not approved
+            </span>
+
+        </div>
+
+
+        {% if rejected_owners %}
+
+        <div class="owner-list">
+
+            {% for owner in rejected_owners %}
+
+            <div class="owner-item">
+
+                <div class="owner-info">
+
+                    <div class="owner-avatar">
+                        ⚠
+                    </div>
+
+                    <div>
+
+                        <div class="owner-name">
+                            {{ owner['name'] }}
+                        </div>
+
+                        <div class="owner-email">
+                            {{ owner['email'] }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <span class="badge rejected">
+                    Rejected
+                </span>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                ✓
+            </div>
+
+            <h3>No rejected owners</h3>
+
+            <p>
+                No owner accounts have been rejected.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</main>
+
+</body>
+</html>

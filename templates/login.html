@@ -1,725 +1,535 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Login | Havenly</title>
 
-
     <style>
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
         }
-
 
         body {
-
             min-height: 100vh;
-
+            background: #f5f7fb;
             display: flex;
-
             align-items: center;
-
             justify-content: center;
-
             padding: 30px;
-
-            font-family: Arial, Helvetica, sans-serif;
-
-            background: #f7f7f5;
-
-            color: #17211b;
-
         }
-
 
         .page {
-
             width: 100%;
-
-            max-width: 1050px;
-
+            max-width: 1100px;
             min-height: 650px;
-
-            display: grid;
-
-            grid-template-columns: 1fr 1fr;
-
             background: white;
-
-            border-radius: 25px;
-
+            border-radius: 28px;
             overflow: hidden;
-
-            box-shadow: 0 20px 60px rgba(0,0,0,0.10);
-
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.10);
         }
 
+        /* LEFT SIDE */
 
-        /* ---------------- LEFT SIDE ---------------- */
-
-        .intro {
-
-            background: #17211b;
-
-            color: white;
-
+        .left-panel {
+            position: relative;
             padding: 55px;
-
+            background: linear-gradient(145deg, #172033, #263653);
+            color: white;
             display: flex;
-
             flex-direction: column;
-
             justify-content: space-between;
-
+            overflow: hidden;
         }
 
+        .left-panel::before {
+            content: "";
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            top: -100px;
+            right: -100px;
+        }
 
-        .logo {
+        .left-panel::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.04);
+            bottom: -90px;
+            left: -70px;
+        }
 
+        .brand {
+            position: relative;
+            z-index: 2;
             font-size: 28px;
-
-            font-weight: 700;
-
+            font-weight: 800;
+            letter-spacing: -1px;
         }
 
-
-        .logo span {
-
-            color: #e56b4f;
-
+        .brand span {
+            color: #9db7ff;
         }
 
-
-        .intro-content {
-
-            margin-top: 30px;
-
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 430px;
         }
 
-
-        .intro-label {
-
-            color: #f08a6f;
-
-            font-size: 13px;
-
-            font-weight: 700;
-
-            text-transform: uppercase;
-
-            letter-spacing: 1.5px;
-
-            margin-bottom: 15px;
-
-        }
-
-
-        .intro h1 {
-
-            font-size: 43px;
-
+        .hero-content h1 {
+            font-size: 46px;
             line-height: 1.1;
-
             margin-bottom: 20px;
-
+            letter-spacing: -1.5px;
         }
 
-
-        .intro p {
-
-            color: #cbd2cd;
-
+        .hero-content p {
+            font-size: 17px;
             line-height: 1.7;
-
-            font-size: 15px;
-
-            max-width: 420px;
-
+            color: #d5dbea;
         }
 
-
-        .features {
-
+        .feature-list {
+            position: relative;
+            z-index: 2;
             display: flex;
-
             flex-direction: column;
-
-            gap: 14px;
-
-            margin-top: 35px;
-
+            gap: 15px;
         }
-
 
         .feature {
-
             display: flex;
-
             align-items: center;
-
             gap: 12px;
-
-            color: #d9dfdb;
-
+            color: #e8ebf4;
             font-size: 14px;
-
         }
-
 
         .feature-icon {
-
-            width: 32px;
-
-            height: 32px;
-
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.10);
             display: flex;
-
             align-items: center;
-
             justify-content: center;
-
-            background: rgba(255,255,255,0.08);
-
-            border-radius: 8px;
-
         }
 
+        /* RIGHT SIDE */
 
-        .copyright {
-
-            color: #89938d;
-
-            font-size: 12px;
-
-        }
-
-
-        /* ---------------- RIGHT SIDE ---------------- */
-
-        .form-section {
-
+        .right-panel {
             padding: 55px;
-
             display: flex;
-
             flex-direction: column;
-
             justify-content: center;
-
         }
 
-
-        .form-header {
-
+        .login-header {
             margin-bottom: 30px;
-
         }
 
-
-        .form-header h2 {
-
-            font-size: 30px;
-
+        .login-header h2 {
+            font-size: 32px;
+            color: #172033;
             margin-bottom: 8px;
-
         }
 
+        .login-header p {
+            color: #777f90;
+            font-size: 15px;
+        }
 
-        .form-header p {
-
-            color: #69736c;
-
+        .error-message,
+        .success-message {
+            padding: 13px 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
             font-size: 14px;
-
         }
-
-
-        /* ---------------- ERROR MESSAGE ---------------- */
 
         .error-message {
-
-            background: #fff0f0;
-
-            border: 1px solid #edbcbc;
-
-            color: #a33a3a;
-
-            padding: 13px 15px;
-
-            border-radius: 10px;
-
-            margin-bottom: 20px;
-
-            font-size: 13px;
-
-            font-weight: 600;
-
+            background: #fff1f1;
+            color: #c0392b;
+            border: 1px solid #ffd4d4;
         }
 
-
-        /* ---------------- FORM ---------------- */
+        .success-message {
+            background: #effaf3;
+            color: #218c4a;
+            border: 1px solid #ccefd8;
+        }
 
         .form-group {
-
             margin-bottom: 20px;
-
         }
-
 
         .form-group label {
-
             display: block;
-
-            font-size: 13px;
-
-            font-weight: 700;
-
             margin-bottom: 8px;
-
+            font-size: 14px;
+            font-weight: 600;
+            color: #333b4d;
         }
-
 
         .form-group input {
-
             width: 100%;
-
-            padding: 14px 15px;
-
-            border: 1px solid #deded9;
-
-            border-radius: 10px;
-
-            font-size: 14px;
-
+            padding: 15px 16px;
+            border: 1px solid #dfe3eb;
+            border-radius: 12px;
             outline: none;
-
-            background: #fbfbfa;
-
+            font-size: 15px;
             transition: 0.2s;
-
+            background: #fafbfc;
         }
-
 
         .form-group input:focus {
-
-            border-color: #17211b;
-
+            border-color: #7188ff;
             background: white;
-
-            box-shadow: 0 0 0 3px rgba(23,33,27,0.05);
-
+            box-shadow: 0 0 0 4px rgba(113,136,255,0.10);
         }
-
 
         .login-btn {
-
             width: 100%;
-
             border: none;
-
-            background: #17211b;
-
-            color: white;
-
             padding: 15px;
-
-            border-radius: 10px;
-
-            font-size: 15px;
-
+            border-radius: 12px;
+            background: #172033;
+            color: white;
+            font-size: 16px;
             font-weight: 700;
-
             cursor: pointer;
-
-            margin-top: 5px;
-
             transition: 0.2s;
-
         }
-
 
         .login-btn:hover {
-
-            background: #26372c;
-
+            background: #293752;
             transform: translateY(-1px);
-
         }
 
+        /* REGISTRATION OPTIONS */
 
-        .login-btn:active {
-
-            transform: translateY(0);
-
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 28px 0 20px;
+            color: #9aa1af;
+            font-size: 13px;
         }
 
-
-        /* ---------------- REGISTER LINK ---------------- */
-
-        .register-link {
-
-            text-align: center;
-
-            margin-top: 22px;
-
-            font-size: 14px;
-
-            color: #69736c;
-
+        .divider::before,
+        .divider::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: #e5e8ee;
         }
 
+        .account-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
 
-        .register-link a {
-
-            color: #e56b4f;
-
+        .account-card {
             text-decoration: none;
-
-            font-weight: 700;
-
+            border: 1px solid #e2e5ec;
+            border-radius: 13px;
+            padding: 16px;
+            transition: 0.2s;
+            background: white;
         }
 
-
-        .register-link a:hover {
-
-            text-decoration: underline;
-
+        .account-card:hover {
+            border-color: #7188ff;
+            background: #f8f9ff;
+            transform: translateY(-2px);
         }
 
+        .account-icon {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .account-card h3 {
+            font-size: 14px;
+            color: #20283a;
+            margin-bottom: 4px;
+        }
+
+        .account-card p {
+            font-size: 12px;
+            color: #818898;
+            line-height: 1.4;
+        }
+
+        /* ADMIN LOGIN */
+
+        .admin-login {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .admin-login a {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            text-decoration: none;
+            color: #596b9d;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 9px 14px;
+            border-radius: 9px;
+            transition: 0.2s;
+        }
+
+        .admin-login a:hover {
+            background: #f1f3f9;
+            color: #172033;
+        }
 
         .back-home {
-
             text-align: center;
-
             margin-top: 20px;
-
         }
-
 
         .back-home a {
-
             text-decoration: none;
-
-            color: #17211b;
-
+            color: #7b8291;
             font-size: 13px;
-
-            font-weight: 600;
-
         }
-
 
         .back-home a:hover {
-
-            color: #e56b4f;
-
+            color: #172033;
         }
 
+        /* RESPONSIVE */
 
-        /* ---------------- MOBILE ---------------- */
-
-        @media (max-width: 750px) {
-
-            body {
-
-                padding: 15px;
-
-            }
-
-
+        @media (max-width: 850px) {
             .page {
-
                 grid-template-columns: 1fr;
-
+                max-width: 560px;
             }
 
-
-            .intro {
-
-                padding: 35px;
-
+            .left-panel {
+                min-height: 300px;
+                padding: 40px;
             }
 
-
-            .intro h1 {
-
-                font-size: 34px;
-
+            .hero-content {
+                margin: 40px 0;
             }
 
-
-            .copyright {
-
-                margin-top: 35px;
-
+            .hero-content h1 {
+                font-size: 36px;
             }
 
-
-            .form-section {
-
-                padding: 35px;
-
+            .feature-list {
+                display: none;
             }
 
+            .right-panel {
+                padding: 40px;
+            }
         }
 
+        @media (max-width: 500px) {
+            body {
+                padding: 15px;
+            }
+
+            .left-panel,
+            .right-panel {
+                padding: 30px 24px;
+            }
+
+            .hero-content h1 {
+                font-size: 32px;
+            }
+
+            .account-options {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
-
 </head>
-
 
 <body>
 
+<div class="page">
 
-    <div class="page">
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
 
+        <div class="brand">
+            Haven<span>ly</span>
+        </div>
 
-        <!-- LEFT INTRODUCTION -->
+        <div class="hero-content">
+            <h1>Find a place that feels like home.</h1>
 
-        <section class="intro">
+            <p>
+                Discover verified PGs, rooms and apartments,
+                connect with property owners and manage your
+                rental journey easily.
+            </p>
+        </div>
 
+        <div class="feature-list">
 
-            <div>
-
-
-                <div class="logo">
-
-                    haven<span>ly</span>
-
-                </div>
-
-
-                <div class="intro-content">
-
-
-                    <div class="intro-label">
-
-                        Welcome Back
-
-                    </div>
-
-
-                    <h1>
-
-                        Your home is waiting.
-
-                    </h1>
-
-
-                    <p>
-
-                        Log in to Havenly to continue exploring
-                        PGs, rooms and apartments and manage
-                        your rental journey.
-
-                    </p>
-
-
-                    <div class="features">
-
-
-                        <div class="feature">
-
-                            <div class="feature-icon">
-
-                                🏠
-
-                            </div>
-
-                            <span>
-
-                                Explore your saved rental journey
-
-                            </span>
-
-                        </div>
-
-
-                        <div class="feature">
-
-                            <div class="feature-icon">
-
-                                📩
-
-                            </div>
-
-                            <span>
-
-                                Track your rental requests
-
-                            </span>
-
-                        </div>
-
-
-                        <div class="feature">
-
-                            <div class="feature-icon">
-
-                                ✨
-
-                            </div>
-
-                            <span>
-
-                                Discover properties that fit you
-
-                            </span>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-
+            <div class="feature">
+                <div class="feature-icon">✓</div>
+                Verified property listings
             </div>
 
-
-            <div class="copyright">
-
-                © 2026 Havenly
-
+            <div class="feature">
+                <div class="feature-icon">⌂</div>
+                Smart property recommendations
             </div>
 
-
-        </section>
-
-
-
-        <!-- LOGIN FORM -->
-
-        <section class="form-section">
-
-
-            <div class="form-header">
-
-                <h2>
-
-                    Welcome back
-
-                </h2>
-
-
-                <p>
-
-                    Login to continue to your Havenly account.
-
-                </p>
-
+            <div class="feature">
+                <div class="feature-icon">✦</div>
+                AI-powered rental assistance
             </div>
 
-
-            {% if error %}
-
-            <div class="error-message">
-
-                ⚠️ {{ error }}
-
-            </div>
-
-            {% endif %}
-
-
-            <form
-                action="/login"
-                method="POST"
-            >
-
-
-                <div class="form-group">
-
-                    <label for="email">
-
-                        Email Address
-
-                    </label>
-
-
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="you@example.com"
-                        required
-                    >
-
-                </div>
-
-
-
-                <div class="form-group">
-
-                    <label for="password">
-
-                        Password
-
-                    </label>
-
-
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        required
-                    >
-
-                </div>
-
-
-
-                <button
-                    type="submit"
-                    class="login-btn"
-                >
-
-                    Login to Havenly
-
-                </button>
-
-
-            </form>
-
-
-            <div class="register-link">
-
-                Don't have an account?
-
-                <a href="/register">
-
-                    Create Account
-
-                </a>
-
-            </div>
-
-
-            <div class="back-home">
-
-                <a href="/">
-
-                    ← Back to Havenly
-
-                </a>
-
-            </div>
-
-
-        </section>
-
+        </div>
 
     </div>
 
 
-</body>
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
 
+        <div class="login-header">
+            <h2>Welcome back</h2>
+            <p>Login to continue to your Havenly account.</p>
+        </div>
+
+
+        {% if error %}
+            <div class="error-message">
+                {{ error }}
+            </div>
+        {% endif %}
+
+
+        {% if success %}
+            <div class="success-message">
+                {{ success }}
+            </div>
+        {% endif %}
+
+
+        <!-- LOGIN FORM -->
+
+        <form action="/login" method="POST">
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="password">Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                >
+            </div>
+
+
+            <button type="submit" class="login-btn">
+                Login
+            </button>
+
+        </form>
+
+
+        <!-- ACCOUNT OPTIONS -->
+
+        <div class="divider">
+            Create a new account
+        </div>
+
+
+        <div class="account-options">
+
+            <a href="/register" class="account-card">
+
+                <div class="account-icon">👤</div>
+
+                <h3>Tenant</h3>
+
+                <p>
+                    Looking for a PG, room or apartment?
+                </p>
+
+            </a>
+
+
+            <a href="/owner-register" class="account-card">
+
+                <div class="account-icon">🏠</div>
+
+                <h3>Property Owner</h3>
+
+                <p>
+                    List and manage your rental properties.
+                </p>
+
+            </a>
+
+        </div>
+
+
+        <!-- ADMIN LOGIN -->
+
+        <div class="admin-login">
+
+            <a href="/admin-login">
+                🔐 Admin Login
+            </a>
+
+        </div>
+
+
+        <!-- BACK HOME -->
+
+        <div class="back-home">
+
+            <a href="/">
+                ← Back to Havenly Home
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
 </html>
