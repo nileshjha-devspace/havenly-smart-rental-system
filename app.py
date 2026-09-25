@@ -1,24 +1,34 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-import sqlite3
 import os
 import uuid
 import re
+import mimetypes
+from urllib.parse import urlparse
 
 from werkzeug.security import generate_password_hash, check_password_hash
+from dotenv import load_dotenv
+from supabase import create_client
+from database.db import get_db_connection
 
 
 app = Flask(__name__)
 app.secret_key = "havenly-development-secret-key"
 
+load_dotenv()
 
-# =========================================================
-# DATABASE
-# =========================================================
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+SUPABASE_BUCKET = "property-images"
 
-def get_db_connection():
-    connection = sqlite3.connect("database/database.db")
-    connection.row_factory = sqlite3.Row
-    return connection
+supabase = None
+
+if SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY:
+    supabase = create_client(
+        SUPABASE_URL,
+        SUPABASE_SERVICE_ROLE_KEY
+    )
+
+
 
 
 # =========================================================
@@ -44,6 +54,77 @@ def allowed_image(filename):
     extension = filename.rsplit(".", 1)[1].lower()
 
     return extension in ALLOWED_IMAGE_EXTENSIONS
+
+
+def upload_image_to_supabase(image, property_id):
+    """
+    Upload one Flask FileStorage image to Supabase Storage
+    and return its public URL.
+    """
+    if supabase is None:
+        raise RuntimeError(
+            "Supabase Storage is not configured. "
+            "Please check SUPABASE_URL and "
+            "SUPABASE_SERVICE_ROLE_KEY in .env."
+        )
+
+    extension = image.filename.rsplit(".", 1)[1].lower()
+    unique_filename = f"{uuid.uuid4().hex}.{extension}"
+    storage_path = f"properties/{property_id}/{unique_filename}"
+
+    content_type = (
+        mimetypes.guess_type(image.filename)[0]
+        or "application/octet-stream"
+    )
+
+    image_data = image.read()
+
+    supabase.storage.from_(SUPABASE_BUCKET).upload(
+        storage_path,
+        image_data,
+        {
+            "content-type": content_type,
+            "upsert": "true"
+        }
+    )
+
+    public_url = (
+        supabase.storage
+        .from_(SUPABASE_BUCKET)
+        .get_public_url(storage_path)
+    )
+
+    return public_url
+
+
+def delete_supabase_image(image_url):
+    """
+    Delete a Havenly image from Supabase Storage.
+    External URLs are ignored safely.
+    """
+    if not image_url or supabase is None:
+        return
+
+    marker = (
+        f"/storage/v1/object/public/"
+        f"{SUPABASE_BUCKET}/"
+    )
+
+    if marker not in image_url:
+        return
+
+    storage_path = image_url.split(marker, 1)[1]
+
+    if not storage_path:
+        return
+
+    try:
+        supabase.storage.from_(SUPABASE_BUCKET).remove(
+            [storage_path]
+        )
+    except Exception:
+        # Image deletion should never break property deletion.
+        pass
 
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -1846,66 +1927,69 @@ def add_property():
     property_id = cursor.lastrowid
 
     first_image_url = ""
+    uploaded_image_urls = []
 
-    for image in valid_images:
+    try:
 
-        original_extension = (
-            image.filename
-            .rsplit(".", 1)[1]
-            .lower()
-        )
+        for image in valid_images:
 
-        unique_filename = (
-            f"{uuid.uuid4().hex}."
-            f"{original_extension}"
-        )
-
-        file_path = os.path.join(
-            app.config["UPLOAD_FOLDER"],
-            unique_filename
-        )
-
-        image.save(file_path)
-
-        image_url = (
-            f"/static/uploads/"
-            f"{unique_filename}"
-        )
-
-        connection.execute(
-            """
-            INSERT INTO property_images
-            (
-                property_id,
-                image_url
-            )
-            VALUES (?, ?)
-            """,
-            (
-                property_id,
-                image_url
-            )
-        )
-
-        if not first_image_url:
-            first_image_url = image_url
-
-    if first_image_url:
-
-        connection.execute(
-            """
-            UPDATE properties
-            SET image_url = ?
-            WHERE id = ?
-            """,
-            (
-                first_image_url,
+            image_url = upload_image_to_supabase(
+                image,
                 property_id
             )
-        )
 
-    connection.commit()
-    connection.close()
+            uploaded_image_urls.append(image_url)
+
+            connection.execute(
+                """
+                INSERT INTO property_images
+                (
+                    property_id,
+                    image_url
+                )
+                VALUES (?, ?)
+                """,
+                (
+                    property_id,
+                    image_url
+                )
+            )
+
+            if not first_image_url:
+                first_image_url = image_url
+
+        if first_image_url:
+
+            connection.execute(
+                """
+                UPDATE properties
+                SET image_url = ?
+                WHERE id = ?
+                """,
+                (
+                    first_image_url,
+                    property_id
+                )
+            )
+
+        connection.commit()
+        connection.close()
+
+    except Exception as error:
+
+        connection.rollback()
+        connection.close()
+
+        for uploaded_url in uploaded_image_urls:
+            delete_supabase_image(uploaded_url)
+
+        return render_template(
+            "add_property.html",
+            error=(
+                "Property could not be saved. "
+                f"Image upload failed: {error}"
+            )
+        )
 
     return redirect(
         url_for(
@@ -2117,73 +2201,78 @@ def edit_property(property_id):
             valid_images.append(image)
 
     first_new_image_url = ""
+    uploaded_image_urls = []
 
-    for image in valid_images:
+    try:
 
-        original_extension = (
-            image.filename
-            .rsplit(".", 1)[1]
-            .lower()
-        )
+        for image in valid_images:
 
-        unique_filename = (
-            f"{uuid.uuid4().hex}."
-            f"{original_extension}"
-        )
-
-        file_path = os.path.join(
-            app.config["UPLOAD_FOLDER"],
-            unique_filename
-        )
-
-        image.save(file_path)
-
-        image_url = (
-            f"/static/uploads/"
-            f"{unique_filename}"
-        )
-
-        connection.execute(
-            """
-            INSERT INTO property_images
-            (
-                property_id,
-                image_url
+            image_url = upload_image_to_supabase(
+                image,
+                property_id
             )
-            VALUES (?, ?)
-            """,
-            (
-                property_id,
-                image_url
+
+            uploaded_image_urls.append(image_url)
+
+            connection.execute(
+                """
+                INSERT INTO property_images
+                (
+                    property_id,
+                    image_url
+                )
+                VALUES (?, ?)
+                """,
+                (
+                    property_id,
+                    image_url
+                )
+            )
+
+            if not first_new_image_url:
+                first_new_image_url = image_url
+
+        # Set main image if there wasn't one
+
+        if (
+            not property_data["image_url"]
+            and first_new_image_url
+        ):
+
+            connection.execute(
+                """
+                UPDATE properties
+                SET image_url = ?
+                WHERE id = ?
+                AND owner_id = ?
+                """,
+                (
+                    first_new_image_url,
+                    property_id,
+                    owner_id
+                )
+            )
+
+        connection.commit()
+        connection.close()
+
+    except Exception as error:
+
+        connection.rollback()
+        connection.close()
+
+        for uploaded_url in uploaded_image_urls:
+            delete_supabase_image(uploaded_url)
+
+        return render_template(
+            "edit_property.html",
+            property=property_data,
+            property_images=property_images,
+            error=(
+                "Property could not be updated. "
+                f"Image upload failed: {error}"
             )
         )
-
-        if not first_new_image_url:
-            first_new_image_url = image_url
-
-    # Set main image if there wasn't one
-
-    if (
-        not property_data["image_url"]
-        and first_new_image_url
-    ):
-
-        connection.execute(
-            """
-            UPDATE properties
-            SET image_url = ?
-            WHERE id = ?
-            AND owner_id = ?
-            """,
-            (
-                first_new_image_url,
-                property_id,
-                owner_id
-            )
-        )
-
-    connection.commit()
-    connection.close()
 
     return redirect(
         url_for(
@@ -2328,6 +2417,9 @@ def delete_property(property_id):
 
             except OSError:
                 pass
+
+        elif "/storage/v1/object/public/property-images/" in image_url:
+            delete_supabase_image(image_url)
 
     return redirect(
         url_for(
