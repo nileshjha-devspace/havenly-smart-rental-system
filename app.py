@@ -131,6 +131,52 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
 # =========================================================
+# APPROVED OWNER SECURITY CHECK
+# =========================================================
+
+def require_approved_owner():
+    """
+    Allow owner-only pages/actions only when the logged-in
+    account exists, has the owner role, and is approved by admin.
+    """
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    if session.get("user_role") != "owner":
+        return redirect(url_for("login"))
+
+    connection = get_db_connection()
+
+    owner = connection.execute(
+        """
+        SELECT id, status
+        FROM users
+        WHERE id = ?
+        AND role = 'owner'
+        """,
+        (session["user_id"],)
+    ).fetchone()
+
+    connection.close()
+
+    if owner is None:
+        session.clear()
+        return redirect(url_for("login"))
+
+    if owner["status"] != "approved":
+        session.clear()
+        return redirect(
+            url_for(
+                "login",
+                owner_status=owner["status"]
+            )
+        )
+
+    return None
+
+
+# =========================================================
 # HOME
 # =========================================================
 
@@ -1291,15 +1337,17 @@ def owner_register():
             name,
             email,
             password,
-            role
+            role,
+            status
         )
-        VALUES (?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?)
         """,
         (
             name,
             email,
             password_hash,
-            "owner"
+            "owner",
+            "pending"
         )
     )
 
@@ -1328,11 +1376,28 @@ def login():
 
         registered = request.args.get("registered")
         next_page = request.args.get("next")
+        owner_status = request.args.get("owner_status")
+
+        owner_status_message = None
+
+        if owner_status == "pending":
+            owner_status_message = (
+                "Your owner account is awaiting admin approval. "
+                "You will be able to access the Owner Dashboard "
+                "once your account is approved."
+            )
+
+        elif owner_status == "rejected":
+            owner_status_message = (
+                "Your owner account has been rejected by the admin "
+                "and cannot access owner features."
+            )
 
         return render_template(
             "login.html",
             registered=registered,
-            next_page=next_page
+            next_page=next_page,
+            error=owner_status_message
         )
 
     email = request.form.get(
@@ -1426,6 +1491,45 @@ def login():
             error="Invalid email or password."
         )
 
+    # ---------------------------------------------------------
+    # BLOCK PENDING OWNER ACCOUNTS
+    # ---------------------------------------------------------
+
+    if (
+        user["role"] == "owner"
+        and user["status"] == "pending"
+    ):
+
+        connection.close()
+
+        return render_template(
+            "login.html",
+            error=(
+                "Your owner account is awaiting admin approval. "
+                "You will be able to access the Owner Dashboard "
+                "once your account is approved."
+            )
+        )
+
+    # ---------------------------------------------------------
+    # BLOCK REJECTED OWNER ACCOUNTS
+    # ---------------------------------------------------------
+
+    if (
+        user["role"] == "owner"
+        and user["status"] == "rejected"
+    ):
+
+        connection.close()
+
+        return render_template(
+            "login.html",
+            error=(
+                "Your owner account has been rejected by the admin "
+                "and cannot access owner features."
+            )
+        )
+
     session["user_id"] = user["id"]
     session["user_name"] = user["name"]
     session["user_email"] = user["email"]
@@ -1448,17 +1552,487 @@ def login():
 
 
 # =========================================================
+# ADMIN LOGIN
+# =========================================================
+
+@app.route(
+    "/admin-login",
+    methods=["GET", "POST"]
+)
+def admin_login():
+
+    if request.method == "GET":
+
+        return render_template(
+            "admin_login.html"
+        )
+
+    email = request.form.get(
+        "email",
+        ""
+    ).strip().lower()
+
+    password = request.form.get(
+        "password",
+        ""
+    )
+
+    if not email or not password:
+
+        return render_template(
+            "admin_login.html",
+            error="Please enter your admin email and password."
+        )
+
+    connection = get_db_connection()
+
+    user = connection.execute(
+        """
+        SELECT *
+        FROM users
+        WHERE email = ?
+        AND role = 'admin'
+        """,
+        (email,)
+    ).fetchone()
+
+    if user is None:
+
+        connection.close()
+
+        return render_template(
+            "admin_login.html",
+            error="Invalid admin email or password."
+        )
+
+    password_valid = False
+
+    try:
+
+        password_valid = check_password_hash(
+            user["password"],
+            password
+        )
+
+    except ValueError:
+
+        password_valid = False
+
+    if not password_valid:
+
+        connection.close()
+
+        return render_template(
+            "admin_login.html",
+            error="Invalid admin email or password."
+        )
+
+    session["user_id"] = user["id"]
+    session["user_name"] = user["name"]
+    session["user_email"] = user["email"]
+    session["user_role"] = "admin"
+
+    connection.close()
+
+    return redirect(
+        url_for("admin_dashboard")
+    )
+
+
+# =========================================================
+# ADMIN DASHBOARD
+# =========================================================
+
+@app.route("/admin-dashboard")
+def admin_dashboard():
+
+    if "user_id" not in session:
+        return redirect(url_for("admin_login"))
+
+    if session.get("user_role") != "admin":
+        return redirect(url_for("login"))
+
+    connection = get_db_connection()
+
+    total_users = connection.execute(
+        "SELECT COUNT(*) FROM users"
+    ).fetchone()[0]
+
+    total_properties = connection.execute(
+        "SELECT COUNT(*) FROM properties"
+    ).fetchone()[0]
+
+    pending_owners = connection.execute(
+        """
+        SELECT COUNT(*)
+        FROM users
+        WHERE role = 'owner'
+        AND status = 'pending'
+        """
+    ).fetchone()[0]
+
+    approved_owners = connection.execute(
+        """
+        SELECT COUNT(*)
+        FROM users
+        WHERE role = 'owner'
+        AND status = 'approved'
+        """
+    ).fetchone()[0]
+
+    pending_owner_list = connection.execute(
+        """
+        SELECT id, name, email, status
+        FROM users
+        WHERE role = 'owner'
+        AND status = 'pending'
+        ORDER BY id DESC
+        """
+    ).fetchall()
+
+    connection.close()
+
+    return render_template(
+        "admin_dashboard.html",
+        total_users=total_users,
+        total_properties=total_properties,
+        pending_owners=pending_owners,
+        approved_owners=approved_owners,
+        pending_owner_list=pending_owner_list
+    )
+
+
+# =========================================================
+# ADMIN USER MANAGEMENT
+# =========================================================
+
+@app.route("/admin-users")
+def admin_users():
+
+    if "user_id" not in session:
+        return redirect(url_for("admin_login"))
+
+    if session.get("user_role") != "admin":
+        return redirect(url_for("login"))
+
+    connection = get_db_connection()
+
+    users = connection.execute(
+        """
+        SELECT
+            id,
+            name,
+            email,
+            role,
+            status
+        FROM users
+        ORDER BY id DESC
+        """
+    ).fetchall()
+
+    connection.close()
+
+    return render_template(
+        "admin_users.html",
+        users=users
+    )
+
+
+
+# =========================================================
+# ADMIN USER DELETE
+# =========================================================
+
+@app.route(
+    "/admin-user/<int:user_id>/delete",
+    methods=["POST"]
+)
+def admin_delete_user(user_id):
+
+    if "user_id" not in session:
+        return redirect(url_for("admin_login"))
+
+    if session.get("user_role") != "admin":
+        return redirect(url_for("login"))
+
+    connection = get_db_connection()
+
+    user = connection.execute(
+        """
+        SELECT id, name, email, role
+        FROM users
+        WHERE id = ?
+        """,
+        (user_id,)
+    ).fetchone()
+
+    if user is None:
+        connection.close()
+        return redirect(url_for("admin_users"))
+
+    # Protect the primary Havenly admin account.
+    if user["email"].strip().lower() == "admin@havenly.com":
+        connection.close()
+        return redirect(url_for("admin_users"))
+
+    # Never allow the currently logged-in admin to delete itself.
+    if user["id"] == session.get("user_id"):
+        connection.close()
+        return redirect(url_for("admin_users"))
+
+    # Remove rental requests connected to this user's activity.
+    connection.execute(
+        """
+        DELETE FROM rental_requests
+        WHERE tenant_id = ?
+        """,
+        (user_id,)
+    )
+
+    # If the user is an owner, remove their property-related records first.
+    if user["role"] == "owner":
+
+        owner_properties = connection.execute(
+            """
+            SELECT id
+            FROM properties
+            WHERE owner_id = ?
+            """,
+            (user_id,)
+        ).fetchall()
+
+        for property_row in owner_properties:
+
+            property_id = property_row["id"]
+
+            connection.execute(
+                """
+                DELETE FROM rental_requests
+                WHERE property_id = ?
+                """,
+                (property_id,)
+            )
+
+            connection.execute(
+                """
+                DELETE FROM property_images
+                WHERE property_id = ?
+                """,
+                (property_id,)
+            )
+
+        connection.execute(
+            """
+            DELETE FROM properties
+            WHERE owner_id = ?
+            """,
+            (user_id,)
+        )
+
+    connection.execute(
+        """
+        DELETE FROM users
+        WHERE id = ?
+        """,
+        (user_id,)
+    )
+
+    connection.commit()
+    connection.close()
+
+    return redirect(url_for("admin_users"))
+
+
+
+# =========================================================
+# ADMIN PROPERTY OVERSIGHT
+# =========================================================
+
+@app.route("/admin-properties")
+def admin_properties():
+
+    if "user_id" not in session:
+        return redirect(url_for("admin_login"))
+
+    if session.get("user_role") != "admin":
+        return redirect(url_for("login"))
+
+    connection = get_db_connection()
+
+    properties = connection.execute(
+        """
+        SELECT
+            properties.id,
+            properties.title,
+            properties.property_type,
+            properties.location,
+            properties.rent,
+            properties.available,
+            users.name AS owner_name,
+            users.email AS owner_email
+        FROM properties
+        LEFT JOIN users
+            ON properties.owner_id = users.id
+        ORDER BY properties.id DESC
+        """
+    ).fetchall()
+
+    connection.close()
+
+    return render_template(
+        "admin_properties.html",
+        properties=properties
+    )
+
+
+# =========================================================
+# ADMIN PLATFORM SAFETY
+# =========================================================
+
+@app.route("/admin-safety")
+def admin_safety():
+
+    if "user_id" not in session:
+        return redirect(url_for("admin_login"))
+
+    if session.get("user_role") != "admin":
+        return redirect(url_for("login"))
+
+    connection = get_db_connection()
+
+    pending_owner_list = connection.execute(
+        """
+        SELECT
+            id,
+            name,
+            email,
+            status
+        FROM users
+        WHERE role = 'owner'
+        AND status = 'pending'
+        ORDER BY id DESC
+        """
+    ).fetchall()
+
+    rejected_owners = connection.execute(
+        """
+        SELECT
+            id,
+            name,
+            email,
+            status
+        FROM users
+        WHERE role = 'owner'
+        AND status = 'rejected'
+        ORDER BY id DESC
+        """
+    ).fetchall()
+
+    approved_owners = connection.execute(
+        """
+        SELECT
+            id,
+            name,
+            email,
+            status
+        FROM users
+        WHERE role = 'owner'
+        AND status = 'approved'
+        ORDER BY id DESC
+        """
+    ).fetchall()
+
+    connection.close()
+
+    return render_template(
+        "admin_safety.html",
+        pending_owner_list=pending_owner_list,
+        rejected_owners=rejected_owners,
+        approved_owners=approved_owners
+    )
+
+
+# =========================================================
+# ADMIN APPROVE OWNER
+# =========================================================
+
+@app.route(
+    "/admin-owner/<int:owner_id>/approve",
+    methods=["POST"]
+)
+def admin_approve_owner(owner_id):
+
+    if "user_id" not in session:
+        return redirect(url_for("admin_login"))
+
+    if session.get("user_role") != "admin":
+        return redirect(url_for("login"))
+
+    connection = get_db_connection()
+
+    connection.execute(
+        """
+        UPDATE users
+        SET status = 'approved'
+        WHERE id = ?
+        AND role = 'owner'
+        AND status = 'pending'
+        """,
+        (owner_id,)
+    )
+
+    connection.commit()
+    connection.close()
+
+    return redirect(url_for("admin_dashboard"))
+
+
+# =========================================================
+# ADMIN REJECT OWNER
+# =========================================================
+
+@app.route(
+    "/admin-owner/<int:owner_id>/reject",
+    methods=["POST"]
+)
+def admin_reject_owner(owner_id):
+
+    if "user_id" not in session:
+        return redirect(url_for("admin_login"))
+
+    if session.get("user_role") != "admin":
+        return redirect(url_for("login"))
+
+    connection = get_db_connection()
+
+    connection.execute(
+        """
+        UPDATE users
+        SET status = 'rejected'
+        WHERE id = ?
+        AND role = 'owner'
+        AND status = 'pending'
+        """,
+        (owner_id,)
+    )
+
+    connection.commit()
+    connection.close()
+
+    return redirect(url_for("admin_dashboard"))
+
+
+# =========================================================
 # OWNER REQUESTS
 # =========================================================
 
 @app.route("/owner-requests")
 def owner_requests():
 
-    if "user_id" not in session:
-        return redirect(url_for("login"))
+    owner_access = require_approved_owner()
 
-    if session.get("user_role") != "owner":
-        return redirect(url_for("tenant_dashboard"))
+    if owner_access:
+        return owner_access
 
     owner_id = session["user_id"]
 
@@ -1542,11 +2116,10 @@ def owner_requests():
 )
 def approve_rental_request(request_id):
 
-    if "user_id" not in session:
-        return redirect(url_for("login"))
+    owner_access = require_approved_owner()
 
-    if session.get("user_role") != "owner":
-        return redirect(url_for("tenant_dashboard"))
+    if owner_access:
+        return owner_access
 
     owner_id = session["user_id"]
 
@@ -1643,11 +2216,10 @@ def approve_rental_request(request_id):
 )
 def reject_rental_request(request_id):
 
-    if "user_id" not in session:
-        return redirect(url_for("login"))
+    owner_access = require_approved_owner()
 
-    if session.get("user_role") != "owner":
-        return redirect(url_for("tenant_dashboard"))
+    if owner_access:
+        return owner_access
 
     owner_id = session["user_id"]
 
@@ -1710,11 +2282,10 @@ def reject_rental_request(request_id):
 @app.route("/owner-dashboard")
 def owner_dashboard():
 
-    if "user_id" not in session:
-        return redirect(url_for("login"))
+    owner_access = require_approved_owner()
 
-    if session.get("user_role") != "owner":
-        return redirect(url_for("tenant_dashboard"))
+    if owner_access:
+        return owner_access
 
     owner_id = session["user_id"]
 
@@ -1794,11 +2365,10 @@ def owner_dashboard():
 )
 def add_property():
 
-    if "user_id" not in session:
-        return redirect(url_for("login"))
+    owner_access = require_approved_owner()
 
-    if session.get("user_role") != "owner":
-        return redirect(url_for("tenant_dashboard"))
+    if owner_access:
+        return owner_access
 
     if request.method == "GET":
         return render_template("add_property.html")
@@ -2009,11 +2579,10 @@ def add_property():
 )
 def edit_property(property_id):
 
-    if "user_id" not in session:
-        return redirect(url_for("login"))
+    owner_access = require_approved_owner()
 
-    if session.get("user_role") != "owner":
-        return redirect(url_for("tenant_dashboard"))
+    if owner_access:
+        return owner_access
 
     owner_id = session["user_id"]
 
@@ -2292,17 +2861,10 @@ def edit_property(property_id):
 )
 def delete_property(property_id):
 
-    if "user_id" not in session:
+    owner_access = require_approved_owner()
 
-        return redirect(
-            url_for("login")
-        )
-
-    if session.get("user_role") != "owner":
-
-        return redirect(
-            url_for("tenant_dashboard")
-        )
+    if owner_access:
+        return owner_access
 
     owner_id = session["user_id"]
 
@@ -2438,15 +3000,10 @@ def delete_property(property_id):
 )
 def owner_ai_insights():
 
-    if "user_id" not in session:
-        return redirect(
-            url_for("login")
-        )
+    owner_access = require_approved_owner()
 
-    if session.get("user_role") != "owner":
-        return redirect(
-            url_for("tenant_dashboard")
-        )
+    if owner_access:
+        return owner_access
 
     owner_id = session["user_id"]
 

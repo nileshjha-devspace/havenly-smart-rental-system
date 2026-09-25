@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>User Management | Havenly</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Inter, Arial, sans-serif;
+        }
+
+        body {
+            background: #f7f8fc;
+            color: #172033;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 72px;
+            background: #ffffff;
+            border-bottom: 1px solid #e8eaf0;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #171b2d;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #6c63ff;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .admin-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #73798c;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #f0efff;
+            color: #5c54e8;
+
+            padding: 10px 16px;
+            border-radius: 10px;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #e5e3ff;
+        }
+
+        /* ================= MAIN ================= */
+
+        .container {
+            width: 88%;
+            max-width: 1250px;
+            margin: 45px auto;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            letter-spacing: -0.8px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #747b8f;
+            font-size: 15px;
+        }
+
+        /* ================= SUMMARY ================= */
+
+        .summary-card {
+            background: white;
+            border: 1px solid #e8eaf0;
+            border-radius: 18px;
+
+            padding: 22px 25px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 25px;
+
+            box-shadow: 0 5px 20px rgba(20, 25, 45, 0.04);
+        }
+
+        .summary-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .summary-icon {
+            width: 48px;
+            height: 48px;
+
+            border-radius: 13px;
+            background: #efeeff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+        }
+
+        .summary-title {
+            font-size: 14px;
+            color: #777d90;
+            margin-bottom: 4px;
+        }
+
+        .summary-number {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-card {
+            background: #ffffff;
+            border: 1px solid #e8eaf0;
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            box-shadow: 0 5px 20px rgba(20, 25, 45, 0.04);
+        }
+
+        .table-header {
+            padding: 22px 25px;
+            border-bottom: 1px solid #eceef3;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .table-header h2 {
+            font-size: 18px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th {
+            background: #fafbfc;
+
+            text-align: left;
+
+            padding: 15px 20px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            color: #7b8193;
+
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 18px 20px;
+
+            border-top: 1px solid #f0f1f5;
+
+            font-size: 14px;
+            color: #343a4d;
+        }
+
+        tbody tr {
+            transition: 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #fafaff;
+        }
+
+        .user-name {
+            font-weight: 700;
+            color: #20263a;
+        }
+
+        .user-email {
+            color: #747b8f;
+            font-size: 13px;
+        }
+
+        /* ================= BADGES ================= */
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 6px 11px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .role-tenant {
+            background: #eef5ff;
+            color: #3973c9;
+        }
+
+        .role-owner {
+            background: #f1edff;
+            color: #6855d9;
+        }
+
+        .role-admin {
+            background: #fff1e7;
+            color: #c76a25;
+        }
+
+        .status-approved {
+            background: #eaf8f0;
+            color: #218653;
+        }
+
+        .status-pending {
+            background: #fff7df;
+            color: #a97800;
+        }
+
+        .status-rejected {
+            background: #fff0f0;
+            color: #d34d4d;
+        }
+
+        /* ================= DELETE BUTTON ================= */
+
+        .delete-form {
+            margin: 0;
+        }
+
+        .delete-btn {
+            border: none;
+
+            background: #fff0f0;
+            color: #d34d4d;
+
+            padding: 8px 13px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #ffe0e0;
+            transform: translateY(-1px);
+        }
+
+        /* ================= PROTECTED ================= */
+
+        .protected-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+
+            padding: 7px 11px;
+
+            border-radius: 20px;
+
+            background: #f1f2f5;
+            color: #686f82;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ================= EMPTY ================= */
+
+        .empty-state {
+            text-align: center;
+            padding: 70px 20px;
+        }
+
+        .empty-icon {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            margin-bottom: 7px;
+        }
+
+        .empty-state p {
+            color: #858b9d;
+            font-size: 14px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 0 5%;
+            }
+
+            .admin-label {
+                display: none;
+            }
+
+            .container {
+                width: 92%;
+                margin: 30px auto;
+            }
+
+            .page-header h1 {
+                font-size: 26px;
+            }
+
+            .summary-card {
+                padding: 18px;
+            }
+
+            .table-header {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <a href="{{ url_for('admin_dashboard') }}" class="logo">
+        Haven<span>ly</span>
+    </a>
+
+    <div class="nav-right">
+
+        <span class="admin-label">
+            Administrator
+        </span>
+
+        <a href="{{ url_for('admin_dashboard') }}" class="back-btn">
+            ← Dashboard
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="container">
+
+    <div class="page-header">
+
+        <h1>👤 User Management</h1>
+
+        <p>
+            View and manage all registered users on the Havenly platform.
+        </p>
+
+    </div>
+
+
+    <!-- ================= SUMMARY ================= -->
+
+    <div class="summary-card">
+
+        <div class="summary-left">
+
+            <div class="summary-icon">
+                👥
+            </div>
+
+            <div>
+
+                <div class="summary-title">
+                    Total Registered Users
+                </div>
+
+                <div class="summary-number">
+                    {{ users|length }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= USER TABLE ================= -->
+
+    <div class="table-card">
+
+        <div class="table-header">
+
+            <h2>All Users</h2>
+
+        </div>
+
+
+        {% if users %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>User</th>
+
+                        <th>Email</th>
+
+                        <th>Role</th>
+
+                        <th>Status</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for user in users %}
+
+                    <tr>
+
+                        <!-- USER ID -->
+
+                        <td>
+                            #{{ user['id'] }}
+                        </td>
+
+
+                        <!-- USER -->
+
+                        <td>
+
+                            <div class="user-name">
+                                {{ user['name'] }}
+                            </div>
+
+                        </td>
+
+
+                        <!-- EMAIL -->
+
+                        <td>
+
+                            <div class="user-email">
+                                {{ user['email'] }}
+                            </div>
+
+                        </td>
+
+
+                        <!-- ROLE -->
+
+                        <td>
+
+                            {% if user['role'] == 'tenant' %}
+
+                                <span class="badge role-tenant">
+                                    Tenant
+                                </span>
+
+                            {% elif user['role'] == 'owner' %}
+
+                                <span class="badge role-owner">
+                                    Property Owner
+                                </span>
+
+                            {% elif user['role'] == 'admin' %}
+
+                                <span class="badge role-admin">
+                                    Administrator
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge">
+                                    {{ user['role'] }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if user['status'] == 'approved' %}
+
+                                <span class="badge status-approved">
+                                    Approved
+                                </span>
+
+                            {% elif user['status'] == 'pending' %}
+
+                                <span class="badge status-pending">
+                                    Pending
+                                </span>
+
+                            {% elif user['status'] == 'rejected' %}
+
+                                <span class="badge status-rejected">
+                                    Rejected
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge">
+                                    {{ user['status'] }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- ACTION -->
+
+                        <td>
+
+                            {% if user['email'] == 'admin@havenly.com' %}
+
+                                <!-- PROTECTED ADMIN -->
+
+                                <span class="protected-badge">
+                                    🔒 Protected
+                                </span>
+
+                            {% else %}
+
+                                <!-- DELETE USER -->
+
+                                <form
+                                    class="delete-form"
+                                    action="{{ url_for('admin_delete_user', user_id=user['id']) }}"
+                                    method="POST"
+                                    onsubmit="return confirmDelete('{{ user['name']|e }}');"
+                                >
+
+                                    <button
+                                        type="submit"
+                                        class="delete-btn"
+                                    >
+                                        🗑️ Delete
+                                    </button>
+
+                                </form>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <!-- ================= EMPTY STATE ================= -->
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                👥
+            </div>
+
+            <h3>
+                No users found
+            </h3>
+
+            <p>
+                There are currently no registered users on Havenly.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</main>
+
+
+<!-- ================= DELETE CONFIRMATION ================= -->
+
+<script>
+
+    function confirmDelete(userName) {
+
+        return confirm(
+            "Are you sure you want to delete " +
+            userName +
+            "?\n\nThis action cannot be undone."
+        );
+
+    }
+
+</script>
+
+</body>
+</html>

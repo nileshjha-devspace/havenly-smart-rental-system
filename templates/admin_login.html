@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Login | Havenly</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, Arial, sans-serif;
+            min-height: 100vh;
+            background: #f6f7f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            color: #17211b;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1050px;
+            min-height: 620px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(23, 33, 27, 0.12);
+        }
+
+        /* LEFT */
+
+        .intro {
+            background: #17211b;
+            color: white;
+            padding: 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: #e56b4f;
+        }
+
+        .admin-badge {
+            display: inline-flex;
+            width: fit-content;
+            margin-top: 55px;
+            padding: 9px 15px;
+            border-radius: 50px;
+            background: rgba(255,255,255,0.09);
+            color: #f5b6a5;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .intro h1 {
+            margin-top: 22px;
+            font-size: 48px;
+            line-height: 1.05;
+            letter-spacing: -2px;
+        }
+
+        .intro p {
+            margin-top: 22px;
+            max-width: 420px;
+            color: #b8c0ba;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .security-note {
+            margin-top: 35px;
+            padding: 18px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            background: rgba(255,255,255,0.04);
+            color: #cbd1cc;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .copyright {
+            color: #879189;
+            font-size: 12px;
+        }
+
+        /* RIGHT */
+
+        .form-section {
+            padding: 55px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-wrapper {
+            width: 100%;
+            max-width: 410px;
+            margin: auto;
+        }
+
+        .form-wrapper h2 {
+            font-size: 32px;
+            letter-spacing: -1px;
+            margin-bottom: 9px;
+        }
+
+        .subtitle {
+            color: #69736c;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .alert {
+            padding: 13px 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .error {
+            background: #fff0ed;
+            color: #b54d35;
+            border: 1px solid #ffd5cc;
+        }
+
+        .form-group {
+            margin-bottom: 19px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #26312a;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #dfe4df;
+            border-radius: 11px;
+            outline: none;
+            font-size: 14px;
+            color: #17211b;
+            background: #fbfcfa;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: #e56b4f;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(229,107,79,0.10);
+        }
+
+        .login-btn {
+            width: 100%;
+            border: none;
+            padding: 15px;
+            border-radius: 11px;
+            background: #17211b;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 7px;
+            transition: 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #26372c;
+            transform: translateY(-1px);
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 22px;
+        }
+
+        .back-home a {
+            text-decoration: none;
+            color: #69736c;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .back-home a:hover {
+            color: #e56b4f;
+        }
+
+        .admin-access {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #89928c;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 750px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .page {
+                grid-template-columns: 1fr;
+            }
+
+            .intro {
+                padding: 35px;
+            }
+
+            .intro h1 {
+                font-size: 36px;
+            }
+
+            .admin-badge {
+                margin-top: 35px;
+            }
+
+            .copyright {
+                margin-top: 40px;
+            }
+
+            .form-section {
+                padding: 35px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="page">
+
+        <!-- LEFT SIDE -->
+
+        <section class="intro">
+
+            <div>
+
+                <div class="logo">
+                    haven<span>ly</span>
+                </div>
+
+                <div class="admin-badge">
+                    🔐 Admin Access
+                </div>
+
+                <h1>
+                    Manage Havenly with confidence.
+                </h1>
+
+                <p>
+                    Access the Havenly administration panel to
+                    review property owners, manage approvals
+                    and keep the rental marketplace safe.
+                </p>
+
+                <div class="security-note">
+                    <strong>Restricted Area</strong><br>
+                    This login is exclusively for authorized
+                    Havenly administrators.
+                </div>
+
+            </div>
+
+            <div class="copyright">
+                © 2026 Havenly
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT SIDE -->
+
+        <section class="form-section">
+
+            <div class="form-wrapper">
+
+                <h2>
+                    Admin Login
+                </h2>
+
+                <p class="subtitle">
+                    Sign in to access the Havenly administration panel.
+                </p>
+
+
+                {% if error %}
+
+                <div class="alert error">
+                    {{ error }}
+                </div>
+
+                {% endif %}
+
+
+                <form
+                    action="/admin-login"
+                    method="POST"
+                >
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Admin Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="admin@havenly.com"
+                            required
+                            autocomplete="username"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter admin password"
+                            required
+                            autocomplete="current-password"
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="login-btn"
+                    >
+                        Sign in as Admin
+                    </button>
+
+                </form>
+
+
+                <div class="back-home">
+
+                    <a href="/">
+                        ← Back to Havenly
+                    </a>
+
+                </div>
+
+
+                <div class="admin-access">
+                    Authorized administrator access only
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</body>
+
+</html>
